@@ -1,9 +1,16 @@
+- [ ] update the frickin readme
+- [ ] upload documentation, pictures, pogress
 - [x] test tube with driver
 - [x] test mcp io expander
 - [ ] create tube/clock controller classes
 - [ ] test mcp driver tube controlling with at least 2 tubes
 - [ ] test RTC module, implement into the setup
-- [ ] design PCB
+- [ ] analyze the necessity of a temp/hum module
 - [ ] implement smart functionality with the IotWebConf base
-???
+- [ ] implement stopwatch/countdown timers
+- [ ] design/test/re-test/order PCB
+- [ ] solder things
+- [ ] case design + create
+- [ ] put things together
+- [ ] ???
 - [ ] profit

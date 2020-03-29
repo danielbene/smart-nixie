@@ -6,8 +6,9 @@
 
 class Tube {
     public:
-        Tube(int ioPins[], Adafruit_MCP23017 mcp);
-        void writeNum(int num);
+        Tube();
+        Tube(int ioPins[], Adafruit_MCP23017 mcpObj);
+        void writeNum(int num); // num has to be < 10
     private:
         Adafruit_MCP23017 mcp;
         int ioPins[4]; // pin numbers on the io expander: [0] - represents binary 8; [3] - represents binary 0-1

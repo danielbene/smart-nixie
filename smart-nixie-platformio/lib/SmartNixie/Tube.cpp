@@ -1,10 +1,15 @@
 #include "Tube.h"
 
+Tube::Tube() {
+    // NOP
+}
+
 Tube::Tube(int pins[4], Adafruit_MCP23017 mcpObj) {
     mcp = mcpObj;
     for (int i = 0; i < 4; i++) {
         ioPins[i] = pins[i];
         mcp.pinMode(ioPins[i], OUTPUT);
+        mcp.pullUp(ioPins[i], true);
     }
 }
 

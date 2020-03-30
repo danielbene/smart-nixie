@@ -1,12 +1,7 @@
 #include <Arduino.h>
-#include "Adafruit_MCP23017.h"
-#include "Display.h"
+#include "SN_Clock.h"
 
-// 1100 value turns off the tube!
-
-Adafruit_MCP23017 mcp;
-Display disp(mcp);
-int value;
+SN_Clock snClock;
 
 void setup() {
   Serial.begin(9600);
@@ -14,8 +9,8 @@ void setup() {
 
 void loop() {
 
-  value = map(analogRead(A0), 0, 1023, 0, 99);
-  disp.show(value);
-  delay(150);
+  snClock.serialClock();
+ 
+  delay(2000);
   
 }

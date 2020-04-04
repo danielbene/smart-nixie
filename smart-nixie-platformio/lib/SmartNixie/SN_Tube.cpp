@@ -15,14 +15,12 @@ SN_Tube::SN_Tube(int pins[4], Adafruit_MCP23017 mcpObj) {
 
 // 1100 value turns off the tube!
 void SN_Tube::writeNum(int num) {
-
-    // TODO: this possibly doesnt needed in the future
     int binaryNum[4] = {0, 0, 0, 0};
-
     int i = 3;
-    while (num > 0) { 
-        binaryNum[i] = num % 2; 
-        num = num / 2; 
+
+    while (num > 0) {
+        binaryNum[i] = num % 2;
+        num = num / 2;
         i--;
     }
 

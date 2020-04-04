@@ -11,7 +11,6 @@ class SN_Display {
         void show(int num);
     private:
         Adafruit_MCP23017 mcp;
-        // TODO: object array?
         SN_Tube minutes;
         SN_Tube tenMinutes;
         SN_Tube hours;

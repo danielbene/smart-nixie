@@ -11,7 +11,7 @@ class SN_Tube {
         void writeNum(int num);
     private:
         Adafruit_MCP23017 mcp;
-        int ioPins[4]; // pin numbers on the io expander: [0] - represents binary 8; [3] - represents binary 0-1
+        int ioPins[4];  // pin numbers on the io expander: [0] - represents dec 8; [3] - represents dec 1
 };
 
 #endif

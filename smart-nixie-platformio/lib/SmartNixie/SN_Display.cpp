@@ -14,17 +14,34 @@ SN_Display::SN_Display() {
     minutesTube = SN_Tube(ioPins[3], mcp);
 }
 
-void SN_Display::show(int num) {
+void SN_Display::fillZeros() {
+    setTubeValues(0, 0, 0, 0);
+    isTurnedOff = false;
+}
+
+// TODO: flashing speed is controlled by the calls (so basically the DELAY timer) - is it too fast?
+void SN_Display::flash() {
+    isFlashStateOn ? fillZeros() : turnOff();
+    isFlashStateOn = !isFlashStateOn;
+}
+
+// TODO: this will be good for error codes too imo
+void SN_Display::flash(int num) {
+    isFlashStateOn ? showDec(num) : turnOff();
+    isFlashStateOn = !isFlashStateOn;
+}
+
+void SN_Display::showDec(int num) {
     Serial.print(num);
     Serial.print(": ");
 
     setTubeValues((num % 10000) / 1000, (num % 1000) / 100, (num % 100) / 10, num % 10);
-    isTurnedOff = true;
+    isTurnedOff = false;
 }
 
 void SN_Display::turnOff() {
     if (!isTurnedOff) {
-        // undisplayable value turns off the tube - handled by the driver IC
+        // undisplayable/invalid value turns off the tube - handled by the driver IC - RTFM
         setTubeValues(SN_Tube::INVALID_STATE, SN_Tube::INVALID_STATE, SN_Tube::INVALID_STATE, SN_Tube::INVALID_STATE);
         isTurnedOff = true;
     }

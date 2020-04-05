@@ -23,32 +23,12 @@ void SN_Clock::setCountUp() {
 }
 
 void SN_Clock::setCountDown(int minutes) {
-    //DateTime currentDateTime = rtc.now();
-
     // these conversions required because TimeSpan doesnt seems to handling big values very well (eg 14400 minutes)
     int days = minutes / 60 / 24;
     int hours = minutes / 60 % 24;
     minutes = minutes % 60;
 
     countDownEnd = rtc.now() + TimeSpan(days, hours, minutes, 0);
-
-    /*Serial.println("#################################");
-    Serial.print("Current time: ");
-    Serial.print(currentDateTime.month());
-    Serial.print("/");
-    Serial.print(currentDateTime.day());
-    Serial.print("  ");
-    Serial.print(currentDateTime.hour());
-    Serial.print(":");
-    Serial.println(currentDateTime.minute());
-    Serial.print("Future time: ");
-    Serial.print(countDownEnd.month());
-    Serial.print("/");
-    Serial.print(countDownEnd.day());
-    Serial.print("  ");
-    Serial.print(countDownEnd.hour());
-    Serial.print(":");
-    Serial.println(countDownEnd.minute());*/
 }
 
 void SN_Clock::doCountDownLoop() {
@@ -65,20 +45,8 @@ void SN_Clock::doCountDownLoop() {
             displayTime(diff.hours() * 100 + diff.minutes());
         }
     } else {
-        // TODO: timer end - flashing display?
-        Serial.println("TIMES UP!");
+        disp.flash();
     }
-
-    /*Serial.println("----------------------");
-    Serial.println(diff.totalseconds());
-    Serial.print(diff.days());
-    Serial.print(" | ");
-    Serial.print(diff.hours());
-    Serial.print(":");
-    Serial.print(diff.minutes());
-    Serial.print(":");
-    Serial.print(diff.seconds());
-    Serial.println();*/
 }
 
 void SN_Clock::displayCurrentTime() {
@@ -110,5 +78,5 @@ int SN_Clock::getCurrentTimeAsDec() {
 void SN_Clock::displayTime(int decTime) {
     Serial.println();
     Serial.println("-------------------------------");
-    disp.show(decTime);
+    disp.showDec(decTime);
 }

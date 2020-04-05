@@ -10,7 +10,7 @@ unsigned long loopTs;
 void setup() {
   Serial.begin(9600);
   loopTs = millis() + DELAY;
-  snClock.startCountDown(1);
+  snClock.setCountDown(1);
 
   snClock.setRTCDateTime(DateTime(2020, 4, 5, 12, 30, 0));
 }

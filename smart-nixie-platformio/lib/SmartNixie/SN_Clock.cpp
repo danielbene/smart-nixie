@@ -18,11 +18,11 @@ void SN_Clock::setRTCDateTime(DateTime currentDateTime) {
     rtc.adjust(currentDateTime);
 }
 
-void SN_Clock::startCountUp() {
+void SN_Clock::setCountUp() {
     countUpStart = rtc.now();
 }
 
-void SN_Clock::startCountDown(int minutes) {
+void SN_Clock::setCountDown(int minutes) {
     //DateTime currentDateTime = rtc.now();
 
     // these conversions required because TimeSpan doesnt seems to handling big values very well (eg 14400 minutes)

@@ -25,6 +25,8 @@ void SN_Tube::writeNum(int num) {
     }
 
     for (int i = 0; i < 4; i++) {
+        Serial.print(binaryNum[i]);
         mcp.digitalWrite(ioPins[i], binaryNum[i]);
     }
+    Serial.print("  ");
 }

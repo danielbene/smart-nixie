@@ -10,13 +10,17 @@ class SN_Clock {
         SN_Clock();
         SN_Display disp;
         RTC_DS3231 rtc;
-        void setTime(DateTime currentDateTime);
+        void setRTCDateTime(DateTime currentDateTime);
+        void startCountUp();
+        void startCountDown(int minutes);
+        void doCountDownLoop();
         void displayCurrentTime();
         void testClock();
 
     private:
         int getCurrentTimeAsDec();
         void displayTime(int decTime);
+
 };
 
 #endif

@@ -15,6 +15,8 @@ SN_Display::SN_Display() {
 }
 
 void SN_Display::show(int num) {
+    Serial.print(num);
+    Serial.print(": ");
     minutes.writeNum(num % 10);
     tenMinutes.writeNum((num % 100) / 10);
     hours.writeNum((num % 1000) / 100);

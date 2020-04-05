@@ -8,17 +8,18 @@
 class SN_Display {
     public:
         SN_Display();
+        boolean isTurnedOff;
         void show(int num);
         void flash(int num);    // ???
         void turnOff();
 
     private:
         Adafruit_MCP23017 mcp;
-        SN_Tube minutes;
-        SN_Tube tenMinutes;
-        SN_Tube hours;
-        SN_Tube tenHours;
-        void setTubeValues(int tenHours, int hours, int tenMinutes, int minutes);
+        SN_Tube minutesTube;
+        SN_Tube tenMinutesTube;
+        SN_Tube hoursTube;
+        SN_Tube tenHoursTube;
+        void setTubeValues(int tenHoursDec, int hoursDec, int tenMinutesDec, int minutesDec);
 
 };
 

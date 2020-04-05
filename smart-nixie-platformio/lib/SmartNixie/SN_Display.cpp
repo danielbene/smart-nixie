@@ -15,36 +15,56 @@ SN_Display::SN_Display() {
 }
 
 void SN_Display::fillZeros() {
-    setTubeValues(0, 0, 0, 0);
-    isTurnedOff = false;
+    if (lastDisplayedDec != 0) {
+        setTubeValues(0, 0, 0, 0);
+    }
+
+    setDisplayFlags(0, false);
 }
 
-// TODO: flashing speed is controlled by the calls (so basically the DELAY timer) - is it too fast?
 void SN_Display::flash() {
     isFlashStateOn ? fillZeros() : turnOff();
-    isFlashStateOn = !isFlashStateOn;
+    flashStateChange();
 }
 
 // TODO: this will be good for error codes too imo
 void SN_Display::flash(int num) {
     isFlashStateOn ? showDec(num) : turnOff();
-    isFlashStateOn = !isFlashStateOn;
+    flashStateChange();
 }
 
 void SN_Display::showDec(int num) {
     Serial.print(num);
     Serial.print(": ");
 
-    setTubeValues((num % 10000) / 1000, (num % 1000) / 100, (num % 100) / 10, num % 10);
-    isTurnedOff = false;
+    if (lastDisplayedDec != num) {
+        setTubeValues((num % 10000) / 1000, (num % 1000) / 100, (num % 100) / 10, num % 10);
+    } else {
+        // TODO: remove after tests
+        Serial.println();
+    }
+
+    setDisplayFlags(num, false);
 }
 
 void SN_Display::turnOff() {
     if (!isTurnedOff) {
         // undisplayable/invalid value turns off the tube - handled by the driver IC - RTFM
         setTubeValues(SN_Tube::INVALID_STATE, SN_Tube::INVALID_STATE, SN_Tube::INVALID_STATE, SN_Tube::INVALID_STATE);
-        isTurnedOff = true;
+        setDisplayFlags(-1, true);
     }
+}
+
+void SN_Display::flashStateChange() {
+    if (millis() > lastFlashStateChange + FLASH_SPEED) {
+        isFlashStateOn = !isFlashStateOn;
+        lastFlashStateChange = millis();
+    }
+}
+
+void SN_Display::setDisplayFlags(int displayNum, boolean isTOff) {
+    lastDisplayedDec = displayNum;
+    isTurnedOff = isTOff;
 }
 
 void SN_Display::setTubeValues(int tenHoursDec, int hoursDec, int tenMinutesDec, int minutesDec) {

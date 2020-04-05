@@ -2,7 +2,7 @@
 #include "SN_Clock.h"
 
 //#define DELAY 350
-#define DELAY 2000
+#define DELAY 500
 
 SN_Clock snClock;
 unsigned long loopTs;

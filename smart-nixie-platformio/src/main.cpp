@@ -1,15 +1,16 @@
 #include <Arduino.h>
-#include "SN_Clock.h"
+#include "SN_LoopControl.h"
 
 //#define DELAY 350
-#define DELAY 500
+#define DELAY 1500
 
-SN_Clock snClock;
 unsigned long loopTs = millis() + DELAY;
+SN_LoopControl snLoopControl = SN_LoopControl();
+
+boolean test = false;
 
 void setup() {
   Serial.begin(115200);
-  snClock.setRTCDateTime(DateTime(2020, 4, 5, 12, 30, 0));
 
 
 
@@ -22,7 +23,15 @@ void loop() {
   if (millis() >= loopTs) {
     //snClock.displayCurrentTime();
     //snClock.doCountDownLoop();
+    //snSensor.testRead();
 
+    if (test) {
+      snLoopControl.doLoop(1);
+    } else {
+      snLoopControl.doLoop(2);
+    }
+
+    test = !test;
 
 
     loopTs = millis() + DELAY;

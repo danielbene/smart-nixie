@@ -8,8 +8,7 @@
 class SN_Clock {
     public:
         SN_Clock();
-        SN_Display disp;
-        RTC_DS3231 rtc;
+        SN_Clock(SN_Display snDisp);
         void displayCurrentTime();
         void doCountDownLoop();
         void setCountUp();
@@ -18,6 +17,11 @@ class SN_Clock {
         void testClock();
 
     private:
+        DateTime defaultDateTime;
+        DateTime countUpStart;
+        DateTime countDownEnd;
+        SN_Display disp;
+        RTC_DS3231 rtc;
         int getCurrentTimeAsDec();
         void displayTime(int decTime);
 

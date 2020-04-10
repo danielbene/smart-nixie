@@ -2,8 +2,8 @@
 #define SN_CLOCK_H
 
 #include <Arduino.h>
+#include <RTClib.h>
 #include "SN_Display.h"
-#include "RTClib.h"
 
 class SN_Clock {
     public:

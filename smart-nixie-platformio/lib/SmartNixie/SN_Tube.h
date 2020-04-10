@@ -1,8 +1,8 @@
 #ifndef SN_TUBE_H
 #define SN_TUBE_H
 
+#include <Adafruit_MCP23017.h>
 #include <Arduino.h>
-#include "Adafruit_MCP23017.h"
 
 class SN_Tube {
     public:

@@ -1,10 +1,13 @@
 #include "SN_Clock.h"
 
-DateTime defaultDateTime(2000, 1, 1, 0, 0, 0);
-DateTime countUpStart;
-DateTime countDownEnd;
-
 SN_Clock::SN_Clock() {
+    // NOP
+}
+
+SN_Clock::SN_Clock(SN_Display snDisp) {
+    disp = snDisp;
+    defaultDateTime = DateTime(2000, 1, 1, 0, 0, 0);
+
     if (!rtc.begin()) {
         // TODO: error code - couldnt find RTC
     }

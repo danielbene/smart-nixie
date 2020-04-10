@@ -1,8 +1,8 @@
 #ifndef SN_DISPLAY_H
 #define SN_DISPLAY_H
 
+#include <Adafruit_MCP23017.h>
 #include <Arduino.h>
-#include "Adafruit_MCP23017.h"
 #include "SN_Tube.h"
 
 #define FLASH_SPEED 1000L

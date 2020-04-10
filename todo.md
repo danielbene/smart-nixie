@@ -8,12 +8,14 @@
 - [x] test mcp driver tube controlling with at least 2 tubes
 - [x] test RTC module, implement into the setup
 - [x] analyze the necessity of a temp/hum module
-- [ ] implement smart functionality with the IotWebConf base
+- [ ] implement smart functionality with the IotWebConf base - wifi handling is in here, it should go before autoturnoff
 - [x] implement countdown
 - [ ] implement countup
 - [ ] implement MAC based autoturnoff
 - [ ] implement time setup (timezone based / manual setup) - blocked by IotWebConf impl
-- [ ] implement sensors (bme temp/hum/air pressure?/altitude?)
+- [x] implement sensors (bme temp/hum/air pressure?/altitude?)
+- [ ] blank left tube before 12:00? / blanking in countdown, countup?
+- [ ] slotmachine!!! - anti cathode poisoning
 
 - [ ] design/test/re-test/order PCB
 - [ ] solder things

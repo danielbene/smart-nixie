@@ -1,13 +1,15 @@
 #include <Arduino.h>
 #include "SN_LoopControl.h"
+#include "SN_IotWebConf.h"
 
 //#define DELAY 250
 #define DELAY 1500
 
-unsigned long loopTs = millis() + DELAY;
+SN_IotWebConf snIotWebConf = SN_IotWebConf();
 SN_LoopControl snLoopControl = SN_LoopControl();
 SN_LoopControl::Mode mode;
 
+unsigned long loopTs = millis() + DELAY;
 boolean test = false;
 
 void setup() {

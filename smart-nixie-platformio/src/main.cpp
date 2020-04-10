@@ -5,14 +5,15 @@
 #define DELAY 500
 
 SN_Clock snClock;
-unsigned long loopTs;
+unsigned long loopTs = millis() + DELAY;
 
 void setup() {
-  Serial.begin(9600);
-  loopTs = millis() + DELAY;
-  snClock.setCountDown(1);
-
+  Serial.begin(115200);
   snClock.setRTCDateTime(DateTime(2020, 4, 5, 12, 30, 0));
+
+
+
+  //snClock.setCountDown(1);
 }
 
 void loop() {
@@ -20,7 +21,10 @@ void loop() {
   // non-blocking delay
   if (millis() >= loopTs) {
     //snClock.displayCurrentTime();
-    snClock.doCountDownLoop();
+    //snClock.doCountDownLoop();
+
+
+
     loopTs = millis() + DELAY;
   }
 }

@@ -8,6 +8,7 @@ class SN_Tube {
     public:
         SN_Tube();
         SN_Tube(int ioPins[], Adafruit_MCP23017 mcpObj);
+        static const int INVALID_STATE = 12;
         void writeNum(int num);
     private:
         Adafruit_MCP23017 mcp;

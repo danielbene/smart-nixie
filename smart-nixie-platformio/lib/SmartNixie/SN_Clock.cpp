@@ -1,19 +1,52 @@
 #include "SN_Clock.h"
 
 DateTime defaultDateTime(2000, 1, 1, 0, 0, 0);
+DateTime countUpStart;
+DateTime countDownEnd;
 
 SN_Clock::SN_Clock() {
     if (!rtc.begin()) {
         // TODO: error code - couldnt find RTC
     }
 
-    if (rtc.lostPower) {
-        setTime(defaultDateTime);   // this only happens if rtc module battery dies, or get removed
+    if (rtc.lostPower()) {
+        setRTCDateTime(defaultDateTime);   // this only happens if rtc module battery dies, or get removed
     }
 }
 
-void SN_Clock::setTime(DateTime currentDateTime) {
+void SN_Clock::setRTCDateTime(DateTime currentDateTime) {
     rtc.adjust(currentDateTime);
+}
+
+void SN_Clock::setCountUp() {
+    countUpStart = rtc.now();
+}
+
+void SN_Clock::setCountDown(int minutes) {
+    // these conversions required because TimeSpan doesnt seems to handling big values very well (eg 14400 minutes)
+    int days = minutes / 60 / 24;
+    int hours = minutes / 60 % 24;
+    minutes = minutes % 60;
+
+    countDownEnd = rtc.now() + TimeSpan(days, hours, minutes, 0);
+}
+
+void SN_Clock::doCountDownLoop() {
+    DateTime currentDateTime = rtc.now();
+    TimeSpan current(currentDateTime.day(), currentDateTime.hour(), currentDateTime.minute(), currentDateTime.second());
+    TimeSpan future(countDownEnd.day(), countDownEnd.hour(), countDownEnd.minute(), countDownEnd.second());
+
+    TimeSpan diff = future - current;
+
+    if (diff.totalseconds() > 0) {
+        if (diff.days() == 0 && diff.hours() == 0) {
+            displayTime(diff.minutes() * 100 + diff.seconds());
+        } else {
+            displayTime(diff.hours() * 100 + diff.minutes());
+        }
+    } else {
+        disp.flash();
+    }
 }
 
 void SN_Clock::displayCurrentTime() {
@@ -39,9 +72,11 @@ void SN_Clock::testClock() {
 
 int SN_Clock::getCurrentTimeAsDec() {
     DateTime now = rtc.now();
-    return now.hour * 100 + now.minute;
+    return now.hour() * 100 + now.minute();
 }
 
 void SN_Clock::displayTime(int decTime) {
-    disp.show(decTime);
+    Serial.println();
+    Serial.println("-------------------------------");
+    disp.showDec(decTime);
 }

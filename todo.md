@@ -1,13 +1,20 @@
-- [ ] update the frickin readme
+- [ ] update the frickin readme!!!
 - [ ] upload documentation, pictures, pogress
+- [ ] write inline docs
+
 - [x] test tube with driver
 - [x] test mcp io expander
-- [ ] create tube/clock controller classes
-- [ ] test mcp driver tube controlling with at least 2 tubes
-- [ ] test RTC module, implement into the setup
-- [ ] analyze the necessity of a temp/hum module
+- [x] create tube/clock controller classes
+- [x] test mcp driver tube controlling with at least 2 tubes
+- [x] test RTC module, implement into the setup
+- [x] analyze the necessity of a temp/hum module
 - [ ] implement smart functionality with the IotWebConf base
-- [ ] implement stopwatch/countdown timers
+- [x] implement countdown
+- [ ] implement countup
+- [ ] implement MAC based autoturnoff
+- [ ] implement time setup (timezone based / manual setup) - blocked by IotWebConf impl
+- [ ] implement sensors (bme temp/hum/air pressure?/altitude?)
+
 - [ ] design/test/re-test/order PCB
 - [ ] solder things
 - [ ] case design + create

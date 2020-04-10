@@ -1,39 +1,31 @@
 #include <Arduino.h>
 #include "SN_LoopControl.h"
 
-//#define DELAY 350
+//#define DELAY 250
 #define DELAY 1500
 
 unsigned long loopTs = millis() + DELAY;
 SN_LoopControl snLoopControl = SN_LoopControl();
+SN_LoopControl::Mode mode;
 
 boolean test = false;
 
 void setup() {
   Serial.begin(115200);
-
-
-
-  //snClock.setCountDown(1);
 }
 
 void loop() {
-
   // non-blocking delay
   if (millis() >= loopTs) {
-    //snClock.displayCurrentTime();
-    //snClock.doCountDownLoop();
-    //snSensor.testRead();
-
     if (test) {
-      snLoopControl.doLoop(1);
+      mode = SN_LoopControl::Mode::CLOCK;
     } else {
-      snLoopControl.doLoop(2);
+      mode = SN_LoopControl::Mode::SENSOR;
     }
 
     test = !test;
 
-
+    snLoopControl.doLoop(mode);
     loopTs = millis() + DELAY;
   }
 }

@@ -1,10 +1,10 @@
-#include "Tube.h"
+#include "SN_Tube.h"
 
-Tube::Tube() {
-    // NOP
+SN_Tube::SN_Tube() {
+    // NOP - used by the object declarations in Display.h
 }
 
-Tube::Tube(int pins[4], Adafruit_MCP23017 mcpObj) {
+SN_Tube::SN_Tube(int pins[4], Adafruit_MCP23017 mcpObj) {
     mcp = mcpObj;
     for (int i = 0; i < 4; i++) {
         ioPins[i] = pins[i];
@@ -13,13 +13,14 @@ Tube::Tube(int pins[4], Adafruit_MCP23017 mcpObj) {
     }
 }
 
-void Tube::writeNum(int num) {
+// 1100 value turns off the tube!
+void SN_Tube::writeNum(int num) {
     int binaryNum[4] = {0, 0, 0, 0};
-
     int i = 3;
-    while (num > 0) { 
-        binaryNum[i] = num % 2; 
-        num = num / 2; 
+
+    while (num > 0) {
+        binaryNum[i] = num % 2;
+        num = num / 2;
         i--;
     }
 

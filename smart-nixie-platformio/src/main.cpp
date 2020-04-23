@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include "SN_LoopControl.h"
 #include "SN_IotWebConf.h"
+#include "SN_LoopControl.h"
 
 //#define DELAY 250
 #define DELAY 1500
@@ -14,9 +14,14 @@ boolean test = false;
 
 void setup() {
   Serial.begin(115200);
+
+  snIotWebConf.setup();
 }
 
 void loop() {
+
+  //snIotWebConf.doLoop();
+
   // non-blocking delay
   if (millis() >= loopTs) {
     if (test) {

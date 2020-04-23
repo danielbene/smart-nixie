@@ -4,21 +4,19 @@
 #include <Arduino.h>
 #include <IotWebConf.h>
 
-#define STRING_LEN 128
-#define NUMBER_LEN 32
-#define CONFIG_VERSION "dem2"
-#define CONFIG_PIN D4
-#define STATUS_PIN LED_BUILTIN
+const char thingName[] = "smart-nixie";
+const char wifiInitialApPassword[] = "123456";
+DNSServer dnsServer;
+WebServer server(80);
+
+IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword);
 
 class SN_IotWebConf {
     public:
         SN_IotWebConf();
+		void setup();
+		void doLoop();
     private:
-		const char thingName[];
-		const char wifiInitialApPassword[];
-		void configSaved();
-		boolean formValidator();
-		DNSServer dnsServer;
 };
 
 #endif

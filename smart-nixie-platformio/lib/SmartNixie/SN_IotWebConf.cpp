@@ -74,11 +74,56 @@ boolean SN_IotWebConf::formValidator() {
 	Serial.println("Validating form.");
 	boolean valid = true;
 
-	int l = server.arg(tzidParam.getId()).length();
+	/*int l = server.arg(tzidParam.getId()).length();
 	if (l < 3) {
 		tzidParam.errorMessage = "Please provide at least 3 characters for this test!";
+		valid = false;
+	}*/
+
+	if (valid && !isValidDate(server.arg(dateTimeParam.getId()).c_str()) && !server.arg(mac1Param.getId()).equals("")) {
+		dateTimeParam.errorMessage = "Invalid date! Please use the example format.";
+		valid = false;
+	}
+
+	if (valid && !isValidMacAddress(server.arg(mac1Param.getId()).c_str()) && !server.arg(mac1Param.getId()).equals("")) {
+		mac1Param.errorMessage = "Not a valid MAC address!";
+		valid = false;
+	}
+
+	if (valid && !isValidMacAddress(server.arg(mac2Param.getId()).c_str()) && !server.arg(mac2Param.getId()).equals("")) {
+		mac2Param.errorMessage = "Not a valid MAC address!";
+		valid = false;
+	}
+
+	if (valid && !isValidMacAddress(server.arg(mac3Param.getId()).c_str()) && !server.arg(mac3Param.getId()).equals("")) {
+		mac3Param.errorMessage = "Not a valid MAC address!";
 		valid = false;
 	}
 
 	return valid;
+}
+
+boolean SN_IotWebConf::isValidDate(const char* dateTime) {
+	//TODO: proper datetime validation for format - yyyy.mm.dd HH24:mm:ss
+	return true;
+}
+
+boolean SN_IotWebConf::isValidMacAddress(const char* mac) {
+	int i = 0;
+	int s = 0;
+
+	while (*mac) {
+		if (isxdigit(*mac)) {
+			i++;
+		} else if (*mac == ':') {
+			if (i == 0 || i / 2 - 1 != s) break;
+			++s;
+		} else {
+			s = -1;
+		}
+
+		++mac;
+	}
+
+	return (i == 12 && s == 5);
 }

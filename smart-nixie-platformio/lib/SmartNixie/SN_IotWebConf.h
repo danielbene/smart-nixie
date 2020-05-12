@@ -27,12 +27,12 @@ static char mac3ParamValue[STRING_LEN];
 //static char intParamValue[NUMBER_LEN];
 //static char floatParamValue[NUMBER_LEN];
 static IotWebConfSeparator timeSeparator = IotWebConfSeparator("Manual/Auto time settings");
-static IotWebConfParameter dateTimeParam = IotWebConfParameter("Current time for manual setup", "dateTimeParam", dateTimeParamValue, STRING_LEN, "text", "2020.12.25 13:30:25", NULL);
-static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone for automatic setup", "tzidParam", tzidParamValue, STRING_LEN, "text", "Europe/Budapest", NULL);
+static IotWebConfParameter dateTimeParam = IotWebConfParameter("Current time for manual setup", "dateTimeParam", dateTimeParamValue, STRING_LEN, "text", "2020.12.25 13:30:25", "");
+static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone for automatic setup", "tzidParam", tzidParamValue, STRING_LEN, "text", "Europe/Budapest", "");
 static IotWebConfSeparator turnoffSeparator = IotWebConfSeparator("Auto turnoff settings");
-static IotWebConfParameter mac1Param = IotWebConfParameter("Device 1 MAC address", "mac1Param", mac1ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", NULL);
-static IotWebConfParameter mac2Param = IotWebConfParameter("Device 2 MAC address", "mac2Param", mac2ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", NULL);
-static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address", "mac3Param", mac3ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", NULL);
+static IotWebConfParameter mac1Param = IotWebConfParameter("Device 1 MAC address", "mac1Param", mac1ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
+static IotWebConfParameter mac2Param = IotWebConfParameter("Device 2 MAC address", "mac2Param", mac2ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
+static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address", "mac3Param", mac3ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
 //static IotWebConfSeparator separator1 = IotWebConfSeparator();
 //static IotWebConfParameter intParam = IotWebConfParameter("Int param", "intParam", intParamValue, NUMBER_LEN, "number", "1..100", NULL, "min='1' max='100' step='1'");
 //static IotWebConfSeparator separator2 = IotWebConfSeparator("Calibration factor");
@@ -48,6 +48,8 @@ class SN_IotWebConf {
         static void configSaved();
         static boolean formValidator();
         static void handleRoot();   // methods provided to server.on must be static (or binded, but you dont want that)
+        static boolean isValidDate(const char* dateTime);
+        static boolean isValidMacAddress(const char* mac);
 
 };
 

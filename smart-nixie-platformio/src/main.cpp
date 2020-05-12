@@ -16,6 +16,10 @@ void setup() {
   Serial.begin(115200);
 
   snIotWebConf.setup();
+
+  Serial.println("IotWebConfParams: ");
+  Serial.println(snIotWebConf.getDateTimeParam());
+  Serial.println(snIotWebConf.getMac1Param());
 }
 
 void loop() {
@@ -34,4 +38,7 @@ void loop() {
     snLoopControl.doLoop(mode);
     loopTs = millis() + DELAY;
   }
+
+  //TODO: 30sec loop for mac address check?
+  //TODO: hour loop for auto time correction?
 }

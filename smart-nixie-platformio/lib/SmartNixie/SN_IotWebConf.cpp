@@ -37,6 +37,26 @@ void SN_IotWebConf::doLoop() {
 	iotWebConf.doLoop();
 }
 
+char *SN_IotWebConf::getDateTimeParam() {
+	return dateTimeParamValue;
+}
+
+char *SN_IotWebConf::getTZIDParam() {
+	return tzidParamValue;
+}
+
+char *SN_IotWebConf::getMac1Param() {
+	return mac1ParamValue;
+}
+
+char *SN_IotWebConf::getMac2Param() {
+	return mac2ParamValue;
+}
+
+char *SN_IotWebConf::getMac3Param() {
+	return mac3ParamValue;
+}
+
 void SN_IotWebConf::handleRoot() {
 	if (iotWebConf.handleCaptivePortal()) {
 		return;

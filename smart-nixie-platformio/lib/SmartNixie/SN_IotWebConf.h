@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <IotWebConf.h>
 
-#define CONFIG_VERSION "asd0"
+#define CONFIG_VERSION "qweg"
 #define CONFIG_PIN D5
 #define STATUS_PIN LED_BUILTIN
 
@@ -38,11 +38,19 @@ static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address
 //static IotWebConfSeparator separator2 = IotWebConfSeparator("Calibration factor");
 //static IotWebConfParameter floatParam = IotWebConfParameter("Float param", "floatParam", floatParamValue, NUMBER_LEN, "number", "e.g. 23.4", NULL, "step='0.1'");
 
+/**
+ * This class feels like a mess.
+ */
 class SN_IotWebConf {
     public:
         SN_IotWebConf();
 		void setup();
 		void doLoop();
+        char *getDateTimeParam();
+        char *getTZIDParam();
+        char *getMac1Param();
+        char *getMac2Param();
+        char *getMac3Param();
 
     private:
         static void configSaved();

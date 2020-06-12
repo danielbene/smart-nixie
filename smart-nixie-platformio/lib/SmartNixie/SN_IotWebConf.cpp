@@ -7,20 +7,18 @@ SN_IotWebConf::SN_IotWebConf() {
 void SN_IotWebConf::setup() {
 	Serial.println("Starting up...");
 
+	isTimeParamsUpdated = false;
+	isAutoTime = false;
+
 	iotWebConf.setStatusPin(STATUS_PIN);
 	iotWebConf.setConfigPin(CONFIG_PIN);
 	iotWebConf.addParameter(&timeSeparator);
-	iotWebConf.addParameter(&dateTimeParam);
+	/*iotWebConf.addParameter(&dateTimeParam);
 	iotWebConf.addParameter(&tzidParam);
 	iotWebConf.addParameter(&turnoffSeparator);
 	iotWebConf.addParameter(&mac1Param);
 	iotWebConf.addParameter(&mac2Param);
-	iotWebConf.addParameter(&mac3Param);
-	//iotWebConf.addParameter(&stringParam);
-	//iotWebConf.addParameter(&separator1);
-	//iotWebConf.addParameter(&intParam);
-	//iotWebConf.addParameter(&separator2);
-	//iotWebConf.addParameter(&floatParam);
+	iotWebConf.addParameter(&mac3Param);*/
 	iotWebConf.setConfigSavedCallback(&configSaved);
 	iotWebConf.setFormValidator(&formValidator);
 
@@ -33,19 +31,23 @@ void SN_IotWebConf::setup() {
 	Serial.println("Ready.");
 }
 
+void SN_IotWebConf::setTimeParamsUpdated(boolean isUpdated) {
+	isTimeParamsUpdated = isUpdated;
+}
+
 void SN_IotWebConf::doLoop() {
 	iotWebConf.doLoop();
 }
 
-char *SN_IotWebConf::getDateTimeParam() {
-	return dateTimeParamValue;
+char* SN_IotWebConf::getDateTimeParam() {
+	return &dateTimeParamValue[0];
 }
 
 char *SN_IotWebConf::getTZIDParam() {
 	return tzidParamValue;
 }
 
-char *SN_IotWebConf::getMac1Param() {
+/*char *SN_IotWebConf::getMac1Param() {
 	return mac1ParamValue;
 }
 
@@ -55,7 +57,7 @@ char *SN_IotWebConf::getMac2Param() {
 
 char *SN_IotWebConf::getMac3Param() {
 	return mac3ParamValue;
-}
+}*/
 
 void SN_IotWebConf::handleRoot() {
 	if (iotWebConf.handleCaptivePortal()) {
@@ -69,16 +71,12 @@ void SN_IotWebConf::handleRoot() {
 	s += dateTimeParamValue;
 	s += "<li>TZID param value: ";
 	s += tzidParamValue;
-	s += "<li>MAC1 param value: ";
+	/*s += "<li>MAC1 param value: ";
 	s += mac1ParamValue;
 	s += "<li>MAC2 param value: ";
 	s += mac2ParamValue;
 	s += "<li>MAC3 param value: ";
-	s += mac3ParamValue;
-	//s += "<li>Int param value: ";
-	//s += atoi(intParamValue);
-	//s += "<li>Float param value: ";
-	//s += atof(floatParamValue);
+	s += mac3ParamValue;*/
 	s += "</ul>";
 	s += "Go to <a href='config'>configure page</a> to change values.";
 	s += "</body></html>\n";
@@ -88,24 +86,27 @@ void SN_IotWebConf::handleRoot() {
 
 void SN_IotWebConf::configSaved() {
 	Serial.println("Configuration was updated.");
+
+	if (dateTimeParamValue != "" || tzidParamValue != "") {
+		isTimeParamsUpdated = true;
+		if (dateTimeParamValue != "") {
+			isAutoTime = false;
+		} else {
+			isAutoTime = true;
+		}
+	}
 }
 
 boolean SN_IotWebConf::formValidator() {
 	Serial.println("Validating form.");
 	boolean valid = true;
 
-	/*int l = server.arg(tzidParam.getId()).length();
-	if (l < 3) {
-		tzidParam.errorMessage = "Please provide at least 3 characters for this test!";
-		valid = false;
-	}*/
-
-	if (valid && !isValidDate(server.arg(dateTimeParam.getId()).c_str()) && !server.arg(mac1Param.getId()).equals("")) {
+	if (valid && !isValidDate(server.arg(dateTimeParam.getId()).c_str()) && !server.arg(dateTimeParam.getId()).equals("")) {
 		dateTimeParam.errorMessage = "Invalid date! Please use the example format.";
 		valid = false;
 	}
 
-	if (valid && !isValidMacAddress(server.arg(mac1Param.getId()).c_str()) && !server.arg(mac1Param.getId()).equals("")) {
+	/*if (valid && !isValidMacAddress(server.arg(mac1Param.getId()).c_str()) && !server.arg(mac1Param.getId()).equals("")) {
 		mac1Param.errorMessage = "Not a valid MAC address!";
 		valid = false;
 	}
@@ -118,7 +119,7 @@ boolean SN_IotWebConf::formValidator() {
 	if (valid && !isValidMacAddress(server.arg(mac3Param.getId()).c_str()) && !server.arg(mac3Param.getId()).equals("")) {
 		mac3Param.errorMessage = "Not a valid MAC address!";
 		valid = false;
-	}
+	}*/
 
 	return valid;
 }

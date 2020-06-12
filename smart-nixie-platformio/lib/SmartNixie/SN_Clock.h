@@ -15,6 +15,8 @@ class SN_Clock {
         void setCountDown(int minutes);
         void setRTCDateTime(DateTime currentDateTime);
         void testClock();
+        boolean isRTCLostPower();
+        DateTime getCurrentDateTime();
 
     private:
         DateTime defaultDateTime;

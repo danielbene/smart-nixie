@@ -3,8 +3,6 @@
 SN_LoopControl::SN_LoopControl() {
     clock = SN_Clock(disp);
     sensor = SN_Sensor(disp);
-
-    adjustRTC();
 }
 
 // this is the main logic node - displayed numbers gets decided here
@@ -23,6 +21,7 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
         sensor.displayCurrentValues();
     } else if (mode == SN_LoopControl::Mode::ERROR) {
         // TODO error handling
+        disp.flash(9999);
     } else if (mode == SN_LoopControl::Mode::OFF) {
         disp.turnOff();
     } else {
@@ -31,7 +30,14 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
 
 }
 
-void SN_LoopControl::adjustRTC() {
-    // TODO: timezone/manual impl after iotwebconf
-    clock.setRTCDateTime(DateTime(2020, 4, 5, 12, 30, 0));
+void SN_LoopControl::adjustRTC(char* dateParam) {
+    tm tm1;
+	sscanf(dateParam,"%4d.%2d.%2d %2d:%2d:%2d",&tm1.tm_year, &tm1.tm_mon,
+            &tm1.tm_mday, &tm1.tm_hour, &tm1.tm_min, &tm1.tm_sec);
+
+    clock.setRTCDateTime(DateTime(tm1.tm_year, tm1.tm_mon, tm1.tm_mday, tm1.tm_hour, tm1.tm_min, tm1.tm_sec));
+}
+
+boolean SN_LoopControl::isRTCLostPower() {
+    return clock.isRTCLostPower();
 }

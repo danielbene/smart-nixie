@@ -11,11 +11,14 @@ class SN_LoopControl {
         SN_LoopControl();
         enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, OFF};
 		void doLoop(SN_LoopControl::Mode mode);
+        void adjustRTC(char* dateParam);
+        boolean isRTCLostPower();
+
     private:
         SN_Clock clock;
         SN_Display disp;
         SN_Sensor sensor;
-        void adjustRTC();
+
 };
 
 #endif

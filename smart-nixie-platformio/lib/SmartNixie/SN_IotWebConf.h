@@ -20,23 +20,16 @@ static IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPasswo
 
 static char dateTimeParamValue[STRING_LEN];
 static char tzidParamValue[STRING_LEN];
-static char mac1ParamValue[STRING_LEN];
-static char mac2ParamValue[STRING_LEN];
-static char mac3ParamValue[STRING_LEN];
-//static char stringParamValue[STRING_LEN];
-//static char intParamValue[NUMBER_LEN];
-//static char floatParamValue[NUMBER_LEN];
+//static char mac1ParamValue[STRING_LEN];
+//static char mac2ParamValue[STRING_LEN];
+//static char mac3ParamValue[STRING_LEN];
 static IotWebConfSeparator timeSeparator = IotWebConfSeparator("Manual/Auto time settings");
 static IotWebConfParameter dateTimeParam = IotWebConfParameter("Current time for manual setup", "dateTimeParam", dateTimeParamValue, STRING_LEN, "text", "2020.12.25 13:30:25", "");
 static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone for automatic setup", "tzidParam", tzidParamValue, STRING_LEN, "text", "Europe/Budapest", "");
-static IotWebConfSeparator turnoffSeparator = IotWebConfSeparator("Auto turnoff settings");
-static IotWebConfParameter mac1Param = IotWebConfParameter("Device 1 MAC address", "mac1Param", mac1ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
-static IotWebConfParameter mac2Param = IotWebConfParameter("Device 2 MAC address", "mac2Param", mac2ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
-static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address", "mac3Param", mac3ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
-//static IotWebConfSeparator separator1 = IotWebConfSeparator();
-//static IotWebConfParameter intParam = IotWebConfParameter("Int param", "intParam", intParamValue, NUMBER_LEN, "number", "1..100", NULL, "min='1' max='100' step='1'");
-//static IotWebConfSeparator separator2 = IotWebConfSeparator("Calibration factor");
-//static IotWebConfParameter floatParam = IotWebConfParameter("Float param", "floatParam", floatParamValue, NUMBER_LEN, "number", "e.g. 23.4", NULL, "step='0.1'");
+//static IotWebConfSeparator turnoffSeparator = IotWebConfSeparator("Auto turnoff settings");
+//static IotWebConfParameter mac1Param = IotWebConfParameter("Device 1 MAC address", "mac1Param", mac1ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
+//static IotWebConfParameter mac2Param = IotWebConfParameter("Device 2 MAC address", "mac2Param", mac2ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
+//static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address", "mac3Param", mac3ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
 
 /**
  * This class feels like a mess.
@@ -44,13 +37,16 @@ static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address
 class SN_IotWebConf {
     public:
         SN_IotWebConf();
+        static boolean isTimeParamsUpdated;
+        static boolean isAutoTime;
 		void setup();
+        void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
-        char *getDateTimeParam();
-        char *getTZIDParam();
-        char *getMac1Param();
+        char* getDateTimeParam();
+        char* getTZIDParam();
+        /*char *getMac1Param();
         char *getMac2Param();
-        char *getMac3Param();
+        char *getMac3Param();*/
 
     private:
         static void configSaved();

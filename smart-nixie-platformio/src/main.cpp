@@ -10,35 +10,35 @@ SN_LoopControl snLoopControl = SN_LoopControl();
 SN_LoopControl::Mode mode;
 
 unsigned long loopTs = millis() + DELAY;
-boolean test = false;
+boolean isTimeSet = !snLoopControl.isRTCLostPower();
 
 void setup() {
-  Serial.begin(115200);
+    Serial.begin(115200);
 
-  snIotWebConf.setup();
-
-  Serial.println("IotWebConfParams: ");
-  Serial.println(snIotWebConf.getDateTimeParam());
-  Serial.println(snIotWebConf.getMac1Param());
+    snIotWebConf.setup();
 }
 
 void loop() {
-  snIotWebConf.doLoop();
+    snIotWebConf.doLoop();
 
-  // non-blocking delay
-  if (millis() >= loopTs) {
-    if (test) {
-      mode = SN_LoopControl::Mode::CLOCK;
-    } else {
-      mode = SN_LoopControl::Mode::SENSOR;
+    /*if (snIotWebConf.isTimeParamsUpdated) {
+        if (snIotWebConf.isAutoTime) {
+            // TODO: web based time setup
+        } else {
+            snLoopControl.adjustRTC(snIotWebConf.getDateTimeParam());
+        }
+
+        snIotWebConf.setTimeParamsUpdated(false);
+        isTimeSet = true;
+    }*/
+
+    if (millis() >= loopTs) {
+
+        if (!isTimeSet) {
+            mode = SN_LoopControl::Mode::ERROR;
+        }
+
+        snLoopControl.doLoop(mode);
+        loopTs = millis() + DELAY;
     }
-
-    test = !test;
-
-    snLoopControl.doLoop(mode);
-    loopTs = millis() + DELAY;
-  }
-
-  //TODO: 30sec loop for mac address check?
-  //TODO: hour loop for auto time correction?
 }

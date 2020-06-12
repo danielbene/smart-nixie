@@ -3,8 +3,10 @@
 
 #include <Arduino.h>
 #include <IotWebConf.h>
+#include <ESP8266mDNS.h>
+#include <ESP8266WiFiMulti.h>
 
-#define CONFIG_VERSION "qweg"
+#define CONFIG_VERSION "asd1"
 #define CONFIG_PIN D5
 #define STATUS_PIN LED_BUILTIN
 
@@ -14,7 +16,7 @@
 const char thingName[] = "smart-nixie";
 const char wifiInitialApPassword[] = "123456";
 static DNSServer dnsServer;
-static WebServer server(80);
+static ESP8266WebServer server(80);
 
 static IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword);
 
@@ -31,27 +33,32 @@ static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone for automat
 //static IotWebConfParameter mac2Param = IotWebConfParameter("Device 2 MAC address", "mac2Param", mac2ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
 //static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address", "mac3Param", mac3ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
 
+static boolean isTimeParamsUpdated;
+static boolean isAutoTime;
+
 /**
- * This class feels like a mess.
+ * This class IS A FRICKIN MESS.
  */
 class SN_IotWebConf {
     public:
         SN_IotWebConf();
-        static boolean isTimeParamsUpdated;
-        static boolean isAutoTime;
 		void setup();
         void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
         char* getDateTimeParam();
         char* getTZIDParam();
+        boolean getIsTimeParamsUpdated();
+        boolean getIsAutoTime();
         /*char *getMac1Param();
         char *getMac2Param();
         char *getMac3Param();*/
 
     private:
-        static void configSaved();
+        static void onConfigSaved();
         static boolean formValidator();
+        static void onConnect();
         static void handleRoot();   // methods provided to server.on must be static (or binded, but you dont want that)
+        static void testPage();
         static boolean isValidDate(const char* dateTime);
         static boolean isValidMacAddress(const char* mac);
 

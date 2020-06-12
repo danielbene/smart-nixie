@@ -21,8 +21,8 @@ void setup() {
 void loop() {
     snIotWebConf.doLoop();
 
-    /*if (snIotWebConf.isTimeParamsUpdated) {
-        if (snIotWebConf.isAutoTime) {
+    if (snIotWebConf.getIsTimeParamsUpdated()) {
+        if (snIotWebConf.getIsAutoTime()) {
             // TODO: web based time setup
         } else {
             snLoopControl.adjustRTC(snIotWebConf.getDateTimeParam());
@@ -30,7 +30,7 @@ void loop() {
 
         snIotWebConf.setTimeParamsUpdated(false);
         isTimeSet = true;
-    }*/
+    }
 
     if (millis() >= loopTs) {
 

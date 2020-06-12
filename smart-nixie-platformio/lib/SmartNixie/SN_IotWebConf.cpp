@@ -13,13 +13,14 @@ void SN_IotWebConf::setup() {
 	iotWebConf.setStatusPin(STATUS_PIN);
 	iotWebConf.setConfigPin(CONFIG_PIN);
 	iotWebConf.addParameter(&timeSeparator);
-	/*iotWebConf.addParameter(&dateTimeParam);
+	iotWebConf.addParameter(&dateTimeParam);
 	iotWebConf.addParameter(&tzidParam);
-	iotWebConf.addParameter(&turnoffSeparator);
+	/*iotWebConf.addParameter(&turnoffSeparator);
 	iotWebConf.addParameter(&mac1Param);
 	iotWebConf.addParameter(&mac2Param);
 	iotWebConf.addParameter(&mac3Param);*/
-	iotWebConf.setConfigSavedCallback(&configSaved);
+	iotWebConf.setConfigSavedCallback(&onConfigSaved);
+	iotWebConf.setWifiConnectionCallback(&onConnect);
 	iotWebConf.setFormValidator(&formValidator);
 
 	iotWebConf.init();
@@ -36,6 +37,7 @@ void SN_IotWebConf::setTimeParamsUpdated(boolean isUpdated) {
 }
 
 void SN_IotWebConf::doLoop() {
+	MDNS.update();
 	iotWebConf.doLoop();
 }
 
@@ -45,6 +47,14 @@ char* SN_IotWebConf::getDateTimeParam() {
 
 char *SN_IotWebConf::getTZIDParam() {
 	return tzidParamValue;
+}
+
+boolean SN_IotWebConf::getIsTimeParamsUpdated() {
+	return isTimeParamsUpdated;
+}
+
+boolean SN_IotWebConf::getIsAutoTime() {
+	return isAutoTime;
 }
 
 /*char *SN_IotWebConf::getMac1Param() {
@@ -59,32 +69,7 @@ char *SN_IotWebConf::getMac3Param() {
 	return mac3ParamValue;
 }*/
 
-void SN_IotWebConf::handleRoot() {
-	if (iotWebConf.handleCaptivePortal()) {
-		return;
-	}
-
-	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
-	s += "<title>SmartNixie setup page</title></head><body>Hello world!";
-	s += "<ul>";
-	s += "<li>Time param value: ";
-	s += dateTimeParamValue;
-	s += "<li>TZID param value: ";
-	s += tzidParamValue;
-	/*s += "<li>MAC1 param value: ";
-	s += mac1ParamValue;
-	s += "<li>MAC2 param value: ";
-	s += mac2ParamValue;
-	s += "<li>MAC3 param value: ";
-	s += mac3ParamValue;*/
-	s += "</ul>";
-	s += "Go to <a href='config'>configure page</a> to change values.";
-	s += "</body></html>\n";
-
-	server.send(200, "text/html", s);
-}
-
-void SN_IotWebConf::configSaved() {
+void SN_IotWebConf::onConfigSaved() {
 	Serial.println("Configuration was updated.");
 
 	if (dateTimeParamValue != "" || tzidParamValue != "") {
@@ -95,6 +80,22 @@ void SN_IotWebConf::configSaved() {
 			isAutoTime = true;
 		}
 	}
+}
+
+void SN_IotWebConf::onConnect() {
+
+	Serial.println(WiFi.status());
+	Serial.println(WiFi.SSID());
+	Serial.println(WiFi.localIP());
+	Serial.println(WiFi.softAPIP());
+	Serial.println(WiFi.getMode());
+
+	delay(1000);
+
+	//MDNS.announce();
+	MDNS.notifyAPChange();
+
+	server.on("/test", testPage);
 }
 
 boolean SN_IotWebConf::formValidator() {
@@ -147,4 +148,37 @@ boolean SN_IotWebConf::isValidMacAddress(const char* mac) {
 	}
 
 	return (i == 12 && s == 5);
+}
+
+void SN_IotWebConf::handleRoot() {
+	if (iotWebConf.handleCaptivePortal()) {
+		return;
+	}
+
+	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
+	s += "<title>SmartNixie setup page</title></head><body>Hello world!";
+	s += "<ul>";
+	s += "<li>Time param value: ";
+	s += dateTimeParamValue;
+	s += "<li>TZID param value: ";
+	s += tzidParamValue;
+	/*s += "<li>MAC1 param value: ";
+	s += mac1ParamValue;
+	s += "<li>MAC2 param value: ";
+	s += mac2ParamValue;
+	s += "<li>MAC3 param value: ";
+	s += mac3ParamValue;*/
+	s += "</ul>";
+	s += "Go to <a href='config'>configure page</a> to change values.";
+	s += "</body></html>\n";
+
+	server.send(200, "text/html", s);
+}
+
+void SN_IotWebConf::testPage() {
+	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
+	s += "<title>Frickin test page</title></head><body><h1>This is a test page!</h1>";
+	s += "</body></html>\n";
+
+	server.send(200, "text/html", s);
 }

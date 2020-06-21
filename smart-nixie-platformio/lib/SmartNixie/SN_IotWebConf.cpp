@@ -92,8 +92,13 @@ void SN_IotWebConf::onConnect() {
 
 	delay(1000);
 
+	//MDNS.notifyAPChange();
 	//MDNS.announce();
-	MDNS.notifyAPChange();
+
+	MDNS.close();
+	delay(500);
+	MDNS.begin("test");
+
 
 	server.on("/test", testPage);
 }

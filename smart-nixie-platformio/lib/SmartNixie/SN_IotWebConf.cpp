@@ -95,6 +95,8 @@ void SN_IotWebConf::onConnect() {
 	//MDNS.notifyAPChange();
 	//MDNS.announce();
 
+	// TODO: MDNS acquired by the iotwebconf process, so it cannot be used for basic task?
+
 	MDNS.close();
 	delay(500);
 	MDNS.begin("test");
@@ -135,6 +137,7 @@ boolean SN_IotWebConf::isValidDate(const char* dateTime) {
 	return true;
 }
 
+// TODO: move to util
 boolean SN_IotWebConf::isValidMacAddress(const char* mac) {
 	int i = 0;
 	int s = 0;

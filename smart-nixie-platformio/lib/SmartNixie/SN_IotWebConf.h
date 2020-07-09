@@ -59,6 +59,9 @@ class SN_IotWebConf {
         static void onConnect();
         static void handleRoot();   // methods provided to server.on must be static (or binded, but you dont want that)
         static void testPage();
+        static void configPage();
+        static void onClockState();
+        static void onSensorState();
         static boolean isValidDate(const char* dateTime);
         static boolean isValidMacAddress(const char* mac);
 

@@ -83,26 +83,14 @@ void SN_IotWebConf::onConfigSaved() {
 }
 
 void SN_IotWebConf::onConnect() {
-
-	Serial.println(WiFi.status());
-	Serial.println(WiFi.SSID());
-	Serial.println(WiFi.localIP());
-	Serial.println(WiFi.softAPIP());
-	Serial.println(WiFi.getMode());
-
-	delay(1000);
-
-	//MDNS.notifyAPChange();
-	//MDNS.announce();
-
-	// TODO: MDNS acquired by the iotwebconf process, so it cannot be used for basic task?
-
 	MDNS.close();
-	delay(500);
-	MDNS.begin("test");
-
+	delay(100);
+	MDNS.begin("nixie");	// after reinit (takes some time) it is reachable on nixie.local dns (on the local network)
 
 	server.on("/test", testPage);
+	server.on("/conf", configPage);
+	server.on("/clock", onClockState);
+	server.on("/sensor", onSensorState);
 }
 
 boolean SN_IotWebConf::formValidator() {
@@ -163,6 +151,7 @@ void SN_IotWebConf::handleRoot() {
 		return;
 	}
 
+	// TODO: static page handling with spiffs
 	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
 	s += "<title>SmartNixie setup page</title></head><body>Hello world!";
 	s += "<ul>";
@@ -184,9 +173,32 @@ void SN_IotWebConf::handleRoot() {
 }
 
 void SN_IotWebConf::testPage() {
+	// TODO: static page handling with spiffs
 	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
 	s += "<title>Frickin test page</title></head><body><h1>This is a test page!</h1>";
 	s += "</body></html>\n";
 
 	server.send(200, "text/html", s);
+}
+
+void SN_IotWebConf::configPage() {
+	// TODO: static page handling with spiffs
+
+	/*String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
+	s += "<title>Frickin test page</title></head><body><h1>This is a test page!</h1>";
+	s += "</body></html>\n";*/
+
+	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/><title>SmartNixie</title><style>.button {border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;} .button1 {background-color: #4CAF50;} /* Green */ .button1:active {background-color: grey;} .button2 {background-color: #008CBA;} /* Blue */ .button2:active {background-color: grey;} </style></head><body><h1>SmartNixie control page!</h1><form action=\"/clock\" method=\"POST\"><button class=\"button button1\" type=\"submit\">CLOCK</button></br></form><button class=\"button button2\" type=\"button\">COUNTUP</button></br><button class=\"button button1\" type=\"button\">COUNTDOWN</button></br><button class=\"button button2\" type=\"button\">SENSOR</button></br><button class=\"button button1\" type=\"button\">OFF</button></br></body></html>";
+
+	server.send(200, "text/html", s);
+}
+
+void SN_IotWebConf::onClockState() {
+	// TODO: handle clock loop
+	Serial.println("CLOCK MODE SET");
+}
+
+void SN_IotWebConf::onSensorState() {
+	// TODO: handle sensor loop
+	Serial.println("SENSOR MODE SET");
 }

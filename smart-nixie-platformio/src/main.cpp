@@ -2,6 +2,8 @@
 #include "SN_IotWebConf.h"
 #include "SN_LoopControl.h"
 
+// NOTE: missing includes has to be installed from PIO library manager!
+
 //#define DELAY 250
 #define DELAY 1500
 

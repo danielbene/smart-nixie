@@ -6,6 +6,8 @@
 #include <ESP8266mDNS.h>
 #include <ESP8266WiFiMulti.h>
 
+#include "SN_LoopControl.h"
+
 #define CONFIG_VERSION "asd1"
 #define CONFIG_PIN D5
 #define STATUS_PIN LED_BUILTIN
@@ -41,6 +43,7 @@ static boolean isAutoTime;
  */
 class SN_IotWebConf {
     public:
+        static SN_LoopControl::Mode currentMode;
         SN_IotWebConf();
 		void setup();
         void setTimeParamsUpdated(boolean isUpdated);
@@ -49,6 +52,7 @@ class SN_IotWebConf {
         char* getTZIDParam();
         boolean getIsTimeParamsUpdated();
         boolean getIsAutoTime();
+        //SN_LoopControl::Mode getCurrentMode();
         /*char *getMac1Param();
         char *getMac2Param();
         char *getMac3Param();*/

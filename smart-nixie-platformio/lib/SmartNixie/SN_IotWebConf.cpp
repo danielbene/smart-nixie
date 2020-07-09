@@ -1,5 +1,7 @@
 #include "SN_IotWebConf.h"
 
+SN_LoopControl::Mode SN_IotWebConf::currentMode = SN_LoopControl::Mode::CLOCK;
+
 SN_IotWebConf::SN_IotWebConf() {
 	//NOP
 }
@@ -188,17 +190,20 @@ void SN_IotWebConf::configPage() {
 	s += "<title>Frickin test page</title></head><body><h1>This is a test page!</h1>";
 	s += "</body></html>\n";*/
 
-	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/><title>SmartNixie</title><style>.button {border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;} .button1 {background-color: #4CAF50;} /* Green */ .button1:active {background-color: grey;} .button2 {background-color: #008CBA;} /* Blue */ .button2:active {background-color: grey;} </style></head><body><h1>SmartNixie control page!</h1><form action=\"/clock\" method=\"POST\"><button class=\"button button1\" type=\"submit\">CLOCK</button></br></form><button class=\"button button2\" type=\"button\">COUNTUP</button></br><button class=\"button button1\" type=\"button\">COUNTDOWN</button></br><button class=\"button button2\" type=\"button\">SENSOR</button></br><button class=\"button button1\" type=\"button\">OFF</button></br></body></html>";
+	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/><title>SmartNixie</title><style>.button {border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;} .button1 {background-color: #4CAF50;} /* Green */ .button1:active {background-color: grey;} .button2 {background-color: #008CBA;} /* Blue */ .button2:active {background-color: grey;} </style></head><body><h1>SmartNixie control page!</h1><form action=\"/clock\" method=\"POST\"><button class=\"button button1\" type=\"submit\">CLOCK</button></br></form><button class=\"button button2\" type=\"button\">COUNTUP</button></br><button class=\"button button1\" type=\"button\">COUNTDOWN</button></br><form action=\"/sensor\" method=\"POST\"><button class=\"button button2\" type=\"submit\">SENSOR</button></br></form><button class=\"button button1\" type=\"button\">OFF</button></br></body></html>";
 
 	server.send(200, "text/html", s);
 }
 
+// method address passing (in the server.on) requires these to be in separate functions
 void SN_IotWebConf::onClockState() {
-	// TODO: handle clock loop
+	currentMode = SN_LoopControl::Mode::CLOCK;
 	Serial.println("CLOCK MODE SET");
+	configPage();
 }
 
 void SN_IotWebConf::onSensorState() {
-	// TODO: handle sensor loop
+	currentMode = SN_LoopControl::Mode::SENSOR;
 	Serial.println("SENSOR MODE SET");
+	configPage();
 }

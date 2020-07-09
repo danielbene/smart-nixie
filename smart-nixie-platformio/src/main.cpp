@@ -40,7 +40,8 @@ void loop() {
             mode = SN_LoopControl::Mode::ERROR;
         }
 
-        snLoopControl.doLoop(mode);
+        //snLoopControl.doLoop(mode);
+        snLoopControl.doLoop(snIotWebConf.currentMode);
         loopTs = millis() + DELAY;
     }
 }

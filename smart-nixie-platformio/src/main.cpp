@@ -7,9 +7,9 @@
 //#define DELAY 250
 #define DELAY 1500
 
-SN_IotWebConf snIotWebConf = SN_IotWebConf();
-SN_LoopControl snLoopControl = SN_LoopControl();
 SN_LoopControl::Mode mode;
+SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode);
+SN_LoopControl snLoopControl = SN_LoopControl();
 
 unsigned long loopTs = millis() + DELAY;
 boolean isTimeSet = !snLoopControl.isRTCLostPower();
@@ -35,13 +35,11 @@ void loop() {
     }
 
     if (millis() >= loopTs) {
-
         if (!isTimeSet) {
             mode = SN_LoopControl::Mode::ERROR;
         }
 
-        //snLoopControl.doLoop(mode);
-        snLoopControl.doLoop(snIotWebConf.currentMode);
+        snLoopControl.doLoop(mode);
         loopTs = millis() + DELAY;
     }
 }

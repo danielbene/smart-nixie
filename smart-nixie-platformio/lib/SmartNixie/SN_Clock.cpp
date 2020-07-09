@@ -4,7 +4,7 @@ SN_Clock::SN_Clock() {
     // NOP
 }
 
-SN_Clock::SN_Clock(SN_Display snDisp) {
+SN_Clock::SN_Clock(SN_Display *snDisp) {
     disp = snDisp;
     if (!rtc.begin()) {
         // TODO: error code - couldnt find RTC
@@ -42,7 +42,7 @@ void SN_Clock::doCountDownLoop() {
             displayTime(diff.hours() * 100 + diff.minutes());
         }
     } else {
-        disp.flash();
+        disp->flash();
     }
 }
 
@@ -83,5 +83,5 @@ int SN_Clock::getCurrentTimeAsDec() {
 void SN_Clock::displayTime(int decTime) {
     Serial.println();
     Serial.println("-------------------------------");
-    disp.showDec(decTime);
+    disp->showDec(decTime);
 }

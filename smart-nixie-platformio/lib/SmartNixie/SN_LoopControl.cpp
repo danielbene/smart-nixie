@@ -1,8 +1,8 @@
 #include "SN_LoopControl.h"
 
 SN_LoopControl::SN_LoopControl() {
-    clock = SN_Clock(disp);
-    sensor = SN_Sensor(disp);
+    clock = SN_Clock(&disp);
+    sensor = SN_Sensor(&disp);
 }
 
 // this is the main logic node - displayed numbers gets decided here

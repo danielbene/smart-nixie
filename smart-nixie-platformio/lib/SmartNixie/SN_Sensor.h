@@ -8,14 +8,14 @@
 class SN_Sensor {
     public:
         SN_Sensor();
-        SN_Sensor(SN_Display snDisp);
+        SN_Sensor(SN_Display *snDisp);
         BME280I2C bme;
         void displayCurrentValues();
         void testRead();
     private:
         BME280::TempUnit tempUnit;
         BME280::PresUnit presUnit;
-        SN_Display disp;
+        SN_Display *disp;
         float temp;
         float hum;
         float pres;

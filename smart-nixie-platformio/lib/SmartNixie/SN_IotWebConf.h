@@ -7,8 +7,9 @@
 #include <ESP8266WiFiMulti.h>
 
 #include "SN_LoopControl.h"
+#include "../common/Util.h"
 
-#define CONFIG_VERSION "asd1"
+#define CONFIG_VERSION "asd2"
 #define CONFIG_PIN D5
 #define STATUS_PIN LED_BUILTIN
 
@@ -43,8 +44,8 @@ static boolean isAutoTime;
  */
 class SN_IotWebConf {
     public:
-        static SN_LoopControl::Mode currentMode;
         SN_IotWebConf();
+        SN_IotWebConf(SN_LoopControl::Mode *mode);
 		void setup();
         void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
@@ -52,22 +53,21 @@ class SN_IotWebConf {
         char* getTZIDParam();
         boolean getIsTimeParamsUpdated();
         boolean getIsAutoTime();
-        //SN_LoopControl::Mode getCurrentMode();
         /*char *getMac1Param();
         char *getMac2Param();
         char *getMac3Param();*/
 
     private:
+        static SN_LoopControl::Mode *currentMode;
         static void onConfigSaved();
         static boolean formValidator();
         static void onConnect();
         static void handleRoot();   // methods provided to server.on must be static (or binded, but you dont want that)
-        static void testPage();
-        static void configPage();
         static void onClockState();
+        static void onCountUpState();
+        static void onCountDownState();
         static void onSensorState();
-        static boolean isValidDate(const char* dateTime);
-        static boolean isValidMacAddress(const char* mac);
+        static void onOffState();
 
 };
 

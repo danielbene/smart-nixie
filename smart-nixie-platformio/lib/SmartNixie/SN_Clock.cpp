@@ -6,14 +6,8 @@ SN_Clock::SN_Clock() {
 
 SN_Clock::SN_Clock(SN_Display snDisp) {
     disp = snDisp;
-    defaultDateTime = DateTime(2000, 1, 1, 0, 0, 0);
-
     if (!rtc.begin()) {
         // TODO: error code - couldnt find RTC
-    }
-
-    if (rtc.lostPower()) {
-        setRTCDateTime(defaultDateTime);   // this only happens if rtc module battery dies, or get removed
     }
 }
 
@@ -71,6 +65,14 @@ void SN_Clock::testClock() {
     Serial.print(':');
     Serial.print(now.second(), DEC);
     Serial.println();
+}
+
+boolean SN_Clock::isRTCLostPower() {
+    return rtc.lostPower(); // this only happens if rtc module battery dies, or get removed
+}
+
+DateTime SN_Clock::getCurrentDateTime() {
+    return rtc.now();
 }
 
 int SN_Clock::getCurrentTimeAsDec() {

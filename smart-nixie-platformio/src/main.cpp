@@ -1,31 +1,47 @@
 #include <Arduino.h>
+#include "SN_IotWebConf.h"
 #include "SN_LoopControl.h"
+
+// NOTE: missing includes has to be installed from PIO library manager!
 
 //#define DELAY 250
 #define DELAY 1500
 
-unsigned long loopTs = millis() + DELAY;
+SN_IotWebConf snIotWebConf = SN_IotWebConf();
 SN_LoopControl snLoopControl = SN_LoopControl();
 SN_LoopControl::Mode mode;
 
-boolean test = false;
+unsigned long loopTs = millis() + DELAY;
+boolean isTimeSet = !snLoopControl.isRTCLostPower();
 
 void setup() {
-  Serial.begin(115200);
+    Serial.begin(115200);
+
+    snIotWebConf.setup();
 }
 
 void loop() {
-  // non-blocking delay
-  if (millis() >= loopTs) {
-    if (test) {
-      mode = SN_LoopControl::Mode::CLOCK;
-    } else {
-      mode = SN_LoopControl::Mode::SENSOR;
+    snIotWebConf.doLoop();
+
+    if (snIotWebConf.getIsTimeParamsUpdated()) {
+        if (snIotWebConf.getIsAutoTime()) {
+            // TODO: web based time setup
+        } else {
+            snLoopControl.adjustRTC(snIotWebConf.getDateTimeParam());
+        }
+
+        snIotWebConf.setTimeParamsUpdated(false);
+        isTimeSet = true;
     }
 
-    test = !test;
+    if (millis() >= loopTs) {
 
-    snLoopControl.doLoop(mode);
-    loopTs = millis() + DELAY;
-  }
+        if (!isTimeSet) {
+            mode = SN_LoopControl::Mode::ERROR;
+        }
+
+        //snLoopControl.doLoop(mode);
+        snLoopControl.doLoop(snIotWebConf.currentMode);
+        loopTs = millis() + DELAY;
+    }
 }

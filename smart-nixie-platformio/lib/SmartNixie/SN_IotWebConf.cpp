@@ -1,13 +1,15 @@
 #include "SN_IotWebConf.h"
 
 SN_LoopControl::Mode *SN_IotWebConf::currentMode = NULL;
+DateTime *SN_IotWebConf::countUpStart = NULL;
 
 SN_IotWebConf::SN_IotWebConf() {
 	//NOP
 }
 
-SN_IotWebConf::SN_IotWebConf(SN_LoopControl::Mode *mode) {
+SN_IotWebConf::SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart) {
 	currentMode = mode;
+	countUpStart = cntUpStart;
 }
 
 void SN_IotWebConf::setup() {
@@ -167,6 +169,7 @@ void SN_IotWebConf::onClockState() {
 
 void SN_IotWebConf::onCountUpState() {
 	*currentMode = SN_LoopControl::Mode::COUNTUP;
+	*countUpStart = rtc.now();
 	Serial.println("COUNTUP MODE SET");
 	handleRoot();
 }

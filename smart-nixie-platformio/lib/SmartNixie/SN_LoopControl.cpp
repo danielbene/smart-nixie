@@ -5,14 +5,21 @@ SN_LoopControl::SN_LoopControl() {
     sensor = SN_Sensor(&disp);
 }
 
+SN_LoopControl::SN_LoopControl(DateTime *cntUpStart) {
+    clock = SN_Clock(&disp);
+    sensor = SN_Sensor(&disp);
+
+    countUpStart = cntUpStart;
+}
+
 // this is the main logic node - displayed numbers gets decided here
 void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
 
     if (mode == SN_LoopControl::Mode::CLOCK) {
         clock.displayCurrentTime();
     } else if (mode == SN_LoopControl::Mode::COUNTUP) {
-        clock.setCountUp();
-        // TODO doCountUpLoop
+        // TODO: add handling for >99:59
+        clock.doCountUpLoop(countUpStart);
     } else if (mode == SN_LoopControl::Mode::COUNTDOWN) {
         // TODO countdown value set - blocked by web UI
         clock.setCountDown(1);

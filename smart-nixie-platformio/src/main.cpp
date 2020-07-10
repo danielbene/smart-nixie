@@ -1,4 +1,5 @@
 #include <Arduino.h>
+
 #include "SN_IotWebConf.h"
 #include "SN_LoopControl.h"
 
@@ -7,9 +8,10 @@
 //#define DELAY 250
 #define DELAY 1500
 
+DateTime countUpStart;
 SN_LoopControl::Mode mode;
-SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode);
-SN_LoopControl snLoopControl = SN_LoopControl();
+SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart);
+SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart);
 
 unsigned long loopTs = millis() + DELAY;
 boolean isTimeSet = !snLoopControl.isRTCLostPower();

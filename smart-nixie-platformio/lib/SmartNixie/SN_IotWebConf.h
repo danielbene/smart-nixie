@@ -2,9 +2,10 @@
 #define SN_IOTWEBCONF_H
 
 #include <Arduino.h>
-#include <IotWebConf.h>
 #include <ESP8266mDNS.h>
 #include <ESP8266WiFiMulti.h>
+#include <IotWebConf.h>
+#include <RTClib.h>
 
 #include "SN_LoopControl.h"
 #include "../common/Util.h"
@@ -45,7 +46,7 @@ static boolean isAutoTime;
 class SN_IotWebConf {
     public:
         SN_IotWebConf();
-        SN_IotWebConf(SN_LoopControl::Mode *mode);
+        SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart);
 		void setup();
         void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
@@ -59,8 +60,9 @@ class SN_IotWebConf {
 
     private:
         static SN_LoopControl::Mode *currentMode;
-        static void onConfigSaved();
+        static DateTime *countUpStart;
         static boolean formValidator();
+        static void onConfigSaved();
         static void onConnect();
         static void handleRoot();   // methods provided to server.on must be static (or binded, but you dont want that)
         static void onClockState();
@@ -68,6 +70,7 @@ class SN_IotWebConf {
         static void onCountDownState();
         static void onSensorState();
         static void onOffState();
+        static RTC_DS3231 rtc;
 
 };
 

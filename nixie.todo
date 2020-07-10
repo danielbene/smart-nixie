@@ -18,6 +18,7 @@
   [ ] blank left tube before 12:00? / blanking in countdown, countup?
   [ ] slotmachine!!! - anti cathode poisoning
   [x] mode change has to trigger display refresh - (does not happen imediately because of the cycle saving feature)
+  [ ] static ip setup through iotwebconf AP
 
   [ ] design/test/re-test/order PCB
   [ ] solder things

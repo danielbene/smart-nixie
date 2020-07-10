@@ -3,7 +3,9 @@
 
 #include <Arduino.h>
 #include <RTClib.h>
+
 #include "SN_Display.h"
+#include "Util.h"
 
 class SN_Clock {
     public:
@@ -11,7 +13,7 @@ class SN_Clock {
         SN_Clock(SN_Display *snDisp);
         void displayCurrentTime();
         void doCountDownLoop();
-        void setCountUp();
+        void doCountUpLoop(DateTime *countUpStart);
         void setCountDown(int minutes);
         void setRTCDateTime(DateTime currentDateTime);
         void testClock();

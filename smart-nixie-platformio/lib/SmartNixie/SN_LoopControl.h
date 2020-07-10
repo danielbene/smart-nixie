@@ -9,6 +9,7 @@
 class SN_LoopControl {
     public:
         SN_LoopControl();
+        SN_LoopControl(DateTime *cntUpStart);
         enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, OFF};
 		void doLoop(SN_LoopControl::Mode mode);
         void adjustRTC(char* dateParam);
@@ -18,6 +19,7 @@ class SN_LoopControl {
         SN_Clock clock;
         SN_Display disp;
         SN_Sensor sensor;
+        DateTime *countUpStart;
 
 };
 

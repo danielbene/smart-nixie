@@ -10,6 +10,7 @@
 class SN_Display {
     public:
         SN_Display();
+        int lastDisplayedDec = 0;
         void fillZeros();
         void flash();
         void flash(int num);
@@ -19,7 +20,6 @@ class SN_Display {
     private:
         boolean isFlashStateOn = true;
         boolean isTurnedOff;
-        int lastDisplayedDec = 0;
         unsigned long lastFlashStateChange = millis();
         Adafruit_MCP23017 mcp;
         SN_Tube tenHoursTube;

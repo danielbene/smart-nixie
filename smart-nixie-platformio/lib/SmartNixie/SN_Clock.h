@@ -12,7 +12,7 @@ class SN_Clock {
         SN_Clock();
         SN_Clock(SN_Display *snDisp);
         void displayCurrentTime();
-        void doCountDownLoop();
+        void doCountDownLoop(DateTime *countDownEnd);
         void doCountUpLoop(DateTime *countUpStart);
         void setCountDown(int minutes);
         void setRTCDateTime(DateTime currentDateTime);
@@ -22,8 +22,6 @@ class SN_Clock {
 
     private:
         DateTime defaultDateTime;
-        DateTime countUpStart;
-        DateTime countDownEnd;
         SN_Display *disp;
         RTC_DS3231 rtc;
         int getCurrentTimeAsDec();

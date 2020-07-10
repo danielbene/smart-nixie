@@ -9,9 +9,10 @@
 #define DELAY 1500
 
 DateTime countUpStart;
+DateTime countDownEnd;
 SN_LoopControl::Mode mode;
-SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart);
-SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart);
+SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
+SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd);
 
 unsigned long loopTs = millis() + DELAY;
 boolean isTimeSet = !snLoopControl.isRTCLostPower();

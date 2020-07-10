@@ -25,3 +25,11 @@ boolean Util::isValidMacAddress(const char* mac) {
 
 	return (i == 12 && s == 5);
 }
+
+DateTime Util::calculateFutureTime(int32_t minutes) {
+	int days = minutes / 60 / 24;
+    int hours = minutes / 60 % 24;
+    minutes = minutes % 60;
+
+    return rtc.now() + TimeSpan(days, hours, minutes, 0);
+}

@@ -2,14 +2,16 @@
 
 SN_LoopControl::Mode *SN_IotWebConf::currentMode = NULL;
 DateTime *SN_IotWebConf::countUpStart = NULL;
+DateTime *SN_IotWebConf::countDownEnd = NULL;
 
 SN_IotWebConf::SN_IotWebConf() {
 	//NOP
 }
 
-SN_IotWebConf::SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart) {
+SN_IotWebConf::SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart, DateTime *cntDownEnd) {
 	currentMode = mode;
 	countUpStart = cntUpStart;
+	countDownEnd = cntDownEnd;
 }
 
 void SN_IotWebConf::setup() {
@@ -138,7 +140,7 @@ void SN_IotWebConf::handleRoot() {
 
 	// TODO: static page handling with spiffs
 
-	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/><title>SmartNixie</title><style>.button {border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;} .button1 {background-color: #4CAF50;} /* Green */ .button1:active {background-color: grey;} .button2 {background-color: #008CBA;} /* Blue */ .button2:active {background-color: grey;} </style></head><body><h1>SmartNixie control page!</h1><form action=\"/clock\" method=\"POST\"><button class=\"button button1\" type=\"submit\">CLOCK</button></br></form><form action=\"/countup\" method=\"POST\"><button class=\"button button2\" type=\"submit\">COUNTUP</button></br></form><form action=\"/countdown\" method=\"POST\"><button class=\"button button1\" type=\"submit\">COUNTDOWN</button></br></form><form action=\"/sensor\" method=\"POST\"><button class=\"button button2\" type=\"submit\">SENSOR</button></br></form><form action=\"/off\" method=\"POST\"><button class=\"button button1\" type=\"submit\">OFF</button></br></form><p>\"Go to <a href='config'>configure page</a> to change values.\"</p></body></html>";
+	String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/><title>SmartNixie</title><style>.button {border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;} .button1 {background-color: #4CAF50;} /* Green */ .button1:active {background-color: grey;} .button2 {background-color: #008CBA;} /* Blue */ .button2:active {background-color: grey;} </style></head><body><h1>SmartNixie control page!</h1><form action=\"/clock\" method=\"POST\"><button class=\"button button1\" type=\"submit\">CLOCK</button></br></form><form action=\"/countup\" method=\"POST\"><button class=\"button button2\" type=\"submit\">COUNTUP</button></br></form><form action=\"/countdown\" method=\"POST\"><button class=\"button button1\" type=\"submit\">COUNTDOWN</button><input type=\"text\" name=\"minutes\" value=\"0\"></br></form><form action=\"/sensor\" method=\"POST\"><button class=\"button button2\" type=\"submit\">SENSOR</button></br></form><form action=\"/off\" method=\"POST\"><button class=\"button button1\" type=\"submit\">OFF</button></br></form><p>Go to <a href='config'>configure page</a> to change values.</p></body></html>";
 
 	/*String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"/>";
 	s += "<title>SmartNixie setup page</title></head><body>Hello world!";
@@ -176,7 +178,30 @@ void SN_IotWebConf::onCountUpState() {
 
 void SN_IotWebConf::onCountDownState() {
 	*currentMode = SN_LoopControl::Mode::COUNTDOWN;
-	Serial.println("COUNTDOWN MODE SET");
+
+	if (server.hasArg("minutes")) {
+		Serial.println("SERVER ARG FOUND");
+		Serial.println(server.arg("minutes"));
+	}
+
+	// FIXME: something causes exception and restart around here!!!
+
+	/*Serial.print("COUNTDOWN MODE SET / ");
+	Serial.print(server.args());
+	Serial.print(" / ");
+	Serial.print(server.arg(0));*/
+	
+	/*for (int i = 0; i < server.args(); i++) {
+		Serial.println();
+		Serial.print(server.argName(i));
+		Serial.print(" / ");
+		Serial.println(server.arg(i));
+		if (server.argName(i) == "minutes") {
+			//min = server.arg(i).toInt();
+			Serial.println("COUNTDOWN VALUE SET");
+		}
+	}*/
+
 	handleRoot();
 }
 

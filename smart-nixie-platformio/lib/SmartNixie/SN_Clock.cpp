@@ -15,19 +15,10 @@ void SN_Clock::setRTCDateTime(DateTime currentDateTime) {
     rtc.adjust(currentDateTime);
 }
 
-void SN_Clock::setCountDown(int minutes) {
-    // these conversions required because TimeSpan doesnt seems to handling big values very well (eg 14400 minutes)
-    int days = minutes / 60 / 24;
-    int hours = minutes / 60 % 24;
-    minutes = minutes % 60;
-
-    countDownEnd = rtc.now() + TimeSpan(days, hours, minutes, 0);
-}
-
-void SN_Clock::doCountDownLoop() {
+void SN_Clock::doCountDownLoop(DateTime *countDownEnd) {
     DateTime currentDateTime = rtc.now();
     TimeSpan current(currentDateTime.day(), currentDateTime.hour(), currentDateTime.minute(), currentDateTime.second());
-    TimeSpan future(countDownEnd.day(), countDownEnd.hour(), countDownEnd.minute(), countDownEnd.second());
+    TimeSpan future((*countDownEnd).day(), (*countDownEnd).hour(), (*countDownEnd).minute(), (*countDownEnd).second());
 
     TimeSpan diff = future - current;
 

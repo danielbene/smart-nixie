@@ -8,7 +8,7 @@
 #include <RTClib.h>
 
 #include "SN_LoopControl.h"
-#include "../common/Util.h"
+#include "Util.h"
 
 #define CONFIG_VERSION "asd2"
 #define CONFIG_PIN D5
@@ -46,7 +46,7 @@ static boolean isAutoTime;
 class SN_IotWebConf {
     public:
         SN_IotWebConf();
-        SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart);
+        SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart, DateTime *cntDownEnd);
 		void setup();
         void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
@@ -61,6 +61,7 @@ class SN_IotWebConf {
     private:
         static SN_LoopControl::Mode *currentMode;
         static DateTime *countUpStart;
+        static DateTime *countDownEnd;
         static boolean formValidator();
         static void onConfigSaved();
         static void onConnect();

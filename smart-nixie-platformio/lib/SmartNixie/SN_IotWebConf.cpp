@@ -3,6 +3,8 @@
 SN_LoopControl::Mode *SN_IotWebConf::currentMode = NULL;
 DateTime *SN_IotWebConf::countUpStart = NULL;
 DateTime *SN_IotWebConf::countDownEnd = NULL;
+boolean SN_IotWebConf::isTimeParamsUpdated = false;
+boolean SN_IotWebConf::isAutoTime = false;
 
 SN_IotWebConf::SN_IotWebConf() {
 	//NOP

@@ -10,7 +10,7 @@ SN_LoopControl::SN_LoopControl(DateTime *cntUpStart, DateTime *cntDownEnd) {
     sensor = SN_Sensor(&disp);
 
     countUpStart = cntUpStart;
-    countDownEnd = countDownEnd;
+    countDownEnd = cntDownEnd;
 }
 
 // this is the main logic node - displayed numbers gets decided here

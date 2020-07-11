@@ -37,9 +37,6 @@ static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone for automat
 //static IotWebConfParameter mac2Param = IotWebConfParameter("Device 2 MAC address", "mac2Param", mac2ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
 //static IotWebConfParameter mac3Param = IotWebConfParameter("Device 3 MAC address", "mac3Param", mac3ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
 
-static boolean isTimeParamsUpdated;
-static boolean isAutoTime;
-
 /**
  * This class IS A FRICKIN MESS.
  */
@@ -62,6 +59,8 @@ class SN_IotWebConf {
         static SN_LoopControl::Mode *currentMode;
         static DateTime *countUpStart;
         static DateTime *countDownEnd;
+        static boolean isTimeParamsUpdated;
+        static boolean isAutoTime;
         static boolean formValidator();
         static void onConfigSaved();
         static void onConnect();

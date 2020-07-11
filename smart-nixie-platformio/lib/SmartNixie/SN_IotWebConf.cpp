@@ -17,6 +17,12 @@ SN_IotWebConf::SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart, D
 void SN_IotWebConf::setup() {
 	Util::printDebugLine("Starting up...", true);
 
+	/*IPAddress staticIp(192, 168, 100, 21);
+	IPAddress gateway(192, 168, 100, 1);
+	IPAddress subnet(255, 255, 255, 0);
+	IPAddress dns(1, 1, 1, 1);
+	WiFi.config(staticIp, gateway, subnet, dns);*/
+
 	isTimeParamsUpdated = false;
 	isAutoTime = false;
 
@@ -56,7 +62,7 @@ void SN_IotWebConf::doLoop() {
 	iotWebConf.doLoop();
 }
 
-char* SN_IotWebConf::getDateTimeParam() {
+char *SN_IotWebConf::getDateTimeParam() {
 	return &dateTimeParamValue[0];
 }
 

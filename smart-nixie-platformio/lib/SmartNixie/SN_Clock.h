@@ -21,7 +21,6 @@ class SN_Clock {
         DateTime getCurrentDateTime();
 
     private:
-        DateTime defaultDateTime;
         SN_Display *disp;
         RTC_DS3231 rtc;
         int getCurrentTimeAsDec();

@@ -1,7 +1,7 @@
 #include "SN_Tube.h"
 
 SN_Tube::SN_Tube() {
-    // NOP - used by the object declarations in Display.h
+    // NOP
 }
 
 SN_Tube::SN_Tube(int pins[4], Adafruit_MCP23017 mcpObj) {
@@ -24,8 +24,9 @@ void SN_Tube::writeNum(int num) {
     }
 
     for (int i = 0; i < 4; i++) {
-        Serial.print(binaryNum[i]);
+        Util::printDebugLine(String(binaryNum[i]));
         mcp.digitalWrite(ioPins[i], binaryNum[i]);
     }
-    Serial.print("  ");
+
+    Util::printDebugLine("  ");
 }

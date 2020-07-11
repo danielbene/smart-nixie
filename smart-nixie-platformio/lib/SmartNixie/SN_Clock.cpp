@@ -51,23 +51,6 @@ void SN_Clock::displayCurrentTime() {
     displayTime(getCurrentTimeAsDec());
 }
 
-void SN_Clock::testClock() {
-    DateTime now = rtc.now();
-
-    Serial.print(now.year(), DEC);
-    Serial.print('/');
-    Serial.print(now.month(), DEC);
-    Serial.print('/');
-    Serial.print(now.day(), DEC);
-    Serial.print("   ");
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
-}
-
 boolean SN_Clock::isRTCLostPower() {
     return rtc.lostPower(); // this only happens if rtc module battery dies, or get removed
 }
@@ -82,7 +65,6 @@ int SN_Clock::getCurrentTimeAsDec() {
 }
 
 void SN_Clock::displayTime(int decTime) {
-    Serial.println();
-    Serial.println("-------------------------------");
+    Util::printDebugLine("-------------------------------", true);
     disp->showDec(decTime);
 }

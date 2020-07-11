@@ -34,19 +34,15 @@ void SN_Display::flash(int num) {
 }
 
 void SN_Display::showDec(int num) {
-    Serial.print(num);
-    Serial.print("(");
-    Serial.print(lastDisplayedDec);
-    Serial.print(")");
-    Serial.print(": ");
+    String msg[] = {String(num), "(", String(lastDisplayedDec), "): "};
+    Util::printDebugLine(msg, 4);
 
     if (lastDisplayedDec != num) {
         setTubeValues((num % 10000) / 1000, (num % 1000) / 100, (num % 100) / 10, num % 10);
         setDisplayFlags(num, false);
-    } else {
-        // TODO: remove after tests
-        Serial.println();
     }
+
+    Util::printDebugLine("", true);
 }
 
 void SN_Display::turnOff() {

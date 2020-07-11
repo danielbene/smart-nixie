@@ -1,8 +1,7 @@
 #include "SN_LoopControl.h"
 
 SN_LoopControl::SN_LoopControl() {
-    clock = SN_Clock(&disp);
-    sensor = SN_Sensor(&disp);
+    // NOP
 }
 
 SN_LoopControl::SN_LoopControl(DateTime *cntUpStart, DateTime *cntDownEnd) {
@@ -19,7 +18,7 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
     if (mode == SN_LoopControl::Mode::CLOCK) {
         clock.displayCurrentTime();
     } else if (mode == SN_LoopControl::Mode::COUNTUP) {
-        // TODO: add handling for >99:59
+        // TODO: add handling for >99:59 (low prior)
         clock.doCountUpLoop(countUpStart);
     } else if (mode == SN_LoopControl::Mode::COUNTDOWN) {
         clock.doCountDownLoop(countDownEnd);

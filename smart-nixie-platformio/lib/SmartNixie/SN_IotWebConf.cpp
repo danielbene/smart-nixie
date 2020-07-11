@@ -165,21 +165,25 @@ void SN_IotWebConf::handleRoot() {
 // method address passing (in the server.on) requires these to be in separate functions
 void SN_IotWebConf::onClockState() {
 	*currentMode = SN_LoopControl::Mode::CLOCK;
-	Serial.println("CLOCK MODE SET");
+	Util::printDebugLine("CLOCK MODE SET", true);
 	handleRoot();
 }
 
 void SN_IotWebConf::onCountUpState() {
 	*currentMode = SN_LoopControl::Mode::COUNTUP;
 	*countUpStart = rtc.now();
-	Serial.println("COUNTUP MODE SET");
+	Util::printDebugLine("COUNTUP MODE SET", true);
 	handleRoot();
 }
 
 void SN_IotWebConf::onCountDownState() {
+	int minutes = server.arg("minutes").toInt();	// web page text input field
 	*currentMode = SN_LoopControl::Mode::COUNTDOWN;
-	*countDownEnd = Util::calculateFutureTime(server.arg("minutes").toInt());
-	Serial.println("COUNTDOWN MODE SET");
+	*countDownEnd = Util::calculateFutureTime(minutes);
+
+	String msg[] = {"COUNTDOWN MODE SET", ", minutes = ", String(minutes)};
+	Util::printDebugLine(msg, 3, true);
+
 	handleRoot();
 }
 

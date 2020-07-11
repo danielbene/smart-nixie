@@ -3,7 +3,9 @@
 
 #include <Arduino.h>
 #include <BME280I2C.h>
+
 #include "SN_Display.h"
+#include "Util.h"
 
 class SN_Sensor {
     public:
@@ -11,7 +13,7 @@ class SN_Sensor {
         SN_Sensor(SN_Display *snDisp);
         BME280I2C bme;
         void displayCurrentValues();
-        void testRead();
+
     private:
         BME280::TempUnit tempUnit;
         BME280::PresUnit presUnit;
@@ -20,6 +22,7 @@ class SN_Sensor {
         float hum;
         float pres;
         void readValues();
+
 };
 
 #endif

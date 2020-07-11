@@ -10,8 +10,11 @@ class Util {
         static boolean isValidDate(const char* dateTime);
         static boolean isValidMacAddress(const char* mac);
         static DateTime calculateFutureTime(int32_t minutes);
+        static void printDebugLine(String param, boolean addNewLine = false);
+        static void printDebugLine(String params[], int paramsSize, boolean addNewLine = false);
 
     private:
+        const static boolean DEBUG = true;
         static RTC_DS3231 rtc;
 
 };

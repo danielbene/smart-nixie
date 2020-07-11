@@ -4,6 +4,8 @@
 #include <Adafruit_MCP23017.h>
 #include <Arduino.h>
 
+#include "Util.h"
+
 class SN_Tube {
     public:
         SN_Tube();

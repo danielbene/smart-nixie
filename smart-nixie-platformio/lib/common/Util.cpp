@@ -2,7 +2,7 @@
 
 boolean Util::isValidDate(const char* dateTime) {
 	//TODO: proper datetime validation for format - yyyy.mm.dd HH24:mm:ss
-    Serial.println("UNIMPLEMENTED METHOD USED! - Util::isValidDate");
+    printDebugLine("UNIMPLEMENTED METHOD USED! - Util::isValidDate", true);
 	return true;
 }
 

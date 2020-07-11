@@ -6,6 +6,7 @@
 
 class Util {
     public:
+        const static boolean DEBUG = true;  // TODO: move this to config
         const static int16_t MAX_DISPLAYABLE_SECS = 5999; // total seconds for the "max displayable time in MINUTES without scaling" -> 99:59
         static boolean isValidDate(const char* dateTime);
         static boolean isValidMacAddress(const char* mac);
@@ -14,7 +15,6 @@ class Util {
         static void printDebugLine(String params[], int paramsSize, boolean addNewLine = false);
 
     private:
-        const static boolean DEBUG = true;
         static RTC_DS3231 rtc;
 
 };

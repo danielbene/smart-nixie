@@ -178,30 +178,8 @@ void SN_IotWebConf::onCountUpState() {
 
 void SN_IotWebConf::onCountDownState() {
 	*currentMode = SN_LoopControl::Mode::COUNTDOWN;
-
-	if (server.hasArg("minutes")) {
-		Serial.println("SERVER ARG FOUND");
-		Serial.println(server.arg("minutes"));
-	}
-
-	// FIXME: something causes exception and restart around here!!!
-
-	/*Serial.print("COUNTDOWN MODE SET / ");
-	Serial.print(server.args());
-	Serial.print(" / ");
-	Serial.print(server.arg(0));*/
-	
-	/*for (int i = 0; i < server.args(); i++) {
-		Serial.println();
-		Serial.print(server.argName(i));
-		Serial.print(" / ");
-		Serial.println(server.arg(i));
-		if (server.argName(i) == "minutes") {
-			//min = server.arg(i).toInt();
-			Serial.println("COUNTDOWN VALUE SET");
-		}
-	}*/
-
+	*countDownEnd = Util::calculateFutureTime(server.arg("minutes").toInt());
+	Serial.println("COUNTDOWN MODE SET");
 	handleRoot();
 }
 

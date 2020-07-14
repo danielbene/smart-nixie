@@ -12,8 +12,7 @@ class SN_LoopControl {
         SN_LoopControl(DateTime *cntUpStart, DateTime *cntDownEnd);
         enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, OFF};
 		void doLoop(SN_LoopControl::Mode mode);
-        void adjustRTC(char* dateParam);
-        boolean isRTCLostPower();
+        boolean timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *manualDateTime);
 
     private:
         SN_Clock clock;

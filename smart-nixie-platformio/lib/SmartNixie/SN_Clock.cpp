@@ -15,6 +15,16 @@ void SN_Clock::setRTCDateTime(DateTime currentDateTime) {
     rtc.adjust(currentDateTime);
 }
 
+void SN_Clock::setupNtpClient() {
+    WiFiUDP ntpUDP;
+    NTPClient timeClient(ntpUDP);
+
+
+    // TODO: implement NTP usage based on this repo (https://github.com/arduino-libraries/NTPClient)
+
+
+}
+
 void SN_Clock::doCountDownLoop(DateTime *countDownEnd) {
     DateTime currentDateTime = rtc.now();
     TimeSpan current(currentDateTime.day(), currentDateTime.hour(), currentDateTime.minute(), currentDateTime.second());

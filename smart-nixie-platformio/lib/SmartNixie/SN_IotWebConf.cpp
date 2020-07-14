@@ -25,9 +25,6 @@ void SN_IotWebConf::setup() {
 	IPAddress dns(1, 1, 1, 1);
 	WiFi.config(staticIp, gateway, subnet, dns);*/
 
-	isTimeParamsUpdated = false;
-	isAutoTime = false;
-
 	iotWebConf.setStatusPin(STATUS_PIN);
 	iotWebConf.setConfigPin(CONFIG_PIN);
 	iotWebConf.addParameter(&timeSeparator);
@@ -55,10 +52,6 @@ void SN_IotWebConf::setup() {
 	Util::printDebugLine("Ready.", true);
 }
 
-void SN_IotWebConf::setTimeParamsUpdated(boolean isUpdated) {
-	isTimeParamsUpdated = isUpdated;
-}
-
 void SN_IotWebConf::doLoop() {
 	MDNS.update();
 	iotWebConf.doLoop();
@@ -70,14 +63,6 @@ char *SN_IotWebConf::getDateTimeParam() {
 
 char *SN_IotWebConf::getTZIDParam() {
 	return tzidParamValue;
-}
-
-boolean SN_IotWebConf::getIsTimeParamsUpdated() {
-	return isTimeParamsUpdated;
-}
-
-boolean SN_IotWebConf::getIsAutoTime() {
-	return isAutoTime;
 }
 
 /*char *SN_IotWebConf::getMac1Param() {

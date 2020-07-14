@@ -34,6 +34,18 @@ DateTime Util::calculateFutureTime(int32_t minutes) {
     return rtc.now() + TimeSpan(days, hours, minutes, 0);
 }
 
+/**
+ * Convert char pointer (c str) to DateTime object.
+ * Needed pattern: yyyy.mm.dd hh:mm:ss
+**/
+DateTime Util::charToDateTime(char *dateStr) {
+	tm tm1;
+	sscanf(dateStr,"%4d.%2d.%2d %2d:%2d:%2d",&tm1.tm_year, &tm1.tm_mon,
+            &tm1.tm_mday, &tm1.tm_hour, &tm1.tm_min, &tm1.tm_sec);
+
+    return DateTime(tm1.tm_year, tm1.tm_mon, tm1.tm_mday, tm1.tm_hour, tm1.tm_min, tm1.tm_sec);
+}
+
 void Util::printDebugLine(String param, boolean addNewLine) {
 	if (DEBUG) {
 		Serial.print(param);

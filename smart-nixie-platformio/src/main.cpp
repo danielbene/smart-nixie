@@ -17,19 +17,9 @@ SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd);
 
 unsigned long loopTs = millis() + DELAY;
 
-boolean timeCheck() {
-    if (snIotWebConf.getIsTimeParamsUpdated()) {
-        if (snIotWebConf.getIsAutoTime()) {
-            // TODO: web based time setup
-        } else {
-            snLoopControl.adjustRTC(snIotWebConf.getDateTimeParam());
-        }
-
-        snIotWebConf.setTimeParamsUpdated(false);
-        return true;
-    }
-
-    return !snLoopControl.isRTCLostPower();
+boolean timeUpdateCheck() {
+    return snLoopControl.timeUpdate(&snIotWebConf.isTimeParamsUpdated,
+        snIotWebConf.isAutoTime, snIotWebConf.getDateTimeParam());
 }
 
 void setup() {
@@ -41,7 +31,8 @@ void loop() {
     snIotWebConf.doLoop();
 
     if (millis() >= loopTs) {
-        if (!timeCheck()) mode = SN_LoopControl::Mode::ERROR;
+        // TODO: timeUpdateCheck do not needed in every loop - maybe through onConfigChanged callback?
+        if (!timeUpdateCheck()) mode = SN_LoopControl::Mode::ERROR;
 
         snLoopControl.doLoop(mode);
         loopTs = millis() + DELAY;

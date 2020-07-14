@@ -11,6 +11,7 @@ class Util {
         static boolean isValidDate(const char* dateTime);
         static boolean isValidMacAddress(const char* mac);
         static DateTime calculateFutureTime(int32_t minutes);
+        static DateTime charToDateTime(char *dateStr);
         static void printDebugLine(String param, boolean addNewLine = false);
         static void printDebugLine(String params[], int paramsSize, boolean addNewLine = false);
 

@@ -44,13 +44,14 @@ class SN_IotWebConf {
     public:
         SN_IotWebConf();
         SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart, DateTime *cntDownEnd);
+        static boolean isTimeParamsUpdated;
+        static boolean isAutoTime;
 		void setup();
         void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
         char* getDateTimeParam();
         char* getTZIDParam();
         boolean getIsTimeParamsUpdated();
-        boolean getIsAutoTime();
         /*char *getMac1Param();
         char *getMac2Param();
         char *getMac3Param();*/
@@ -59,8 +60,6 @@ class SN_IotWebConf {
         static SN_LoopControl::Mode *currentMode;
         static DateTime *countUpStart;
         static DateTime *countDownEnd;
-        static boolean isTimeParamsUpdated;
-        static boolean isAutoTime;
         static boolean formValidator();
         static void onConfigSaved();
         static void onConnect();

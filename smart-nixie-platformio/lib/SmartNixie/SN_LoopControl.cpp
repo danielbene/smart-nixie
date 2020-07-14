@@ -29,20 +29,24 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
         disp.flash(9999);
     } else if (mode == SN_LoopControl::Mode::OFF) {
         disp.turnOff();
-    } else {
-        // TODO error - non-valid mode
     }
 
 }
 
-void SN_LoopControl::adjustRTC(char* dateParam) {
-    tm tm1;
-	sscanf(dateParam,"%4d.%2d.%2d %2d:%2d:%2d",&tm1.tm_year, &tm1.tm_mon,
-            &tm1.tm_mday, &tm1.tm_hour, &tm1.tm_min, &tm1.tm_sec);
+boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *manualDateTime) {
 
-    clock.setRTCDateTime(DateTime(tm1.tm_year, tm1.tm_mon, tm1.tm_mday, tm1.tm_hour, tm1.tm_min, tm1.tm_sec));
-}
+    // TODO: fix logic
+    if (isTimeParamsUpdated) {
+        if (isNtpTime) {
+            // TODO: web based time setup
+        } else {
+            clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
+        }
 
-boolean SN_LoopControl::isRTCLostPower() {
+        *isTimeParamsUpdated = false;
+        return true;
+    }
+
+    // TODO: check power loss on setup only, not every loop
     return clock.isRTCLostPower();
 }

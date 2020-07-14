@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 #include <RTClib.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 #include "SN_Display.h"
 #include "Util.h"
@@ -16,6 +18,7 @@ class SN_Clock {
         void doCountUpLoop(DateTime *countUpStart);
         void setCountDown(int minutes);
         void setRTCDateTime(DateTime currentDateTime);
+        void setupNtpClient();
         boolean isRTCLostPower();
         DateTime getCurrentDateTime();
 

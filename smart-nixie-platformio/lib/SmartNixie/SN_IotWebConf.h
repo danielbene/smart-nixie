@@ -51,7 +51,6 @@ class SN_IotWebConf {
 		void doLoop();
         char* getDateTimeParam();
         char* getTZIDParam();
-        boolean getIsTimeParamsUpdated();
         /*char *getMac1Param();
         char *getMac2Param();
         char *getMac3Param();*/

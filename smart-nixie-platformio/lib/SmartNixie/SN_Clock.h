@@ -13,20 +13,22 @@ class SN_Clock {
     public:
         SN_Clock();
         SN_Clock(SN_Display *snDisp);
+        NTPClient *timeClient;
         void displayCurrentTime();
         void doCountDownLoop(DateTime *countDownEnd);
         void doCountUpLoop(DateTime *countUpStart);
         void setCountDown(int minutes);
         void setRTCDateTime(DateTime currentDateTime);
-        void setupNtpClient();
         boolean isRTCLostPower();
         DateTime getCurrentDateTime();
 
     private:
         SN_Display *disp;
         RTC_DS3231 rtc;
+        WiFiUDP ntpUDP;
         int getCurrentTimeAsDec();
         void displayTime(int decTime);
+        void setupNtpClient();
 
 };
 

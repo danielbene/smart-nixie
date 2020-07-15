@@ -16,6 +16,7 @@ SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
 SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd);
 
 unsigned long loopTs = millis() + DELAY;
+boolean isTimeSet = false;
 
 boolean timeUpdateCheck() {
     return snLoopControl.timeUpdate(&snIotWebConf.isTimeParamsUpdated,
@@ -25,16 +26,22 @@ boolean timeUpdateCheck() {
 void setup() {
     if (Util::DEBUG) Serial.begin(115200);
     snIotWebConf.setup();
+
+    isTimeSet = timeUpdateCheck();
 }
 
 void loop() {
     snIotWebConf.doLoop();
 
     if (millis() >= loopTs) {
-        // TODO: timeUpdateCheck do not needed in every loop - maybe through onConfigChanged callback?
-        if (!timeUpdateCheck()) mode = SN_LoopControl::Mode::ERROR;
+        if (!isTimeSet || snIotWebConf.isTimeParamsUpdated) {
+            mode = SN_LoopControl::Mode::ERROR;
+            isTimeSet = timeUpdateCheck();
+        }
 
         snLoopControl.doLoop(mode);
         loopTs = millis() + DELAY;
+
+        Util::printDebugLine(snLoopControl.testNTPTime(), true);
     }
 }

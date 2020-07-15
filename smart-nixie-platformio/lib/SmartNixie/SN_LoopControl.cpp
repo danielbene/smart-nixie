@@ -31,14 +31,16 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
         disp.turnOff();
     }
 
+    // ntp update will only do work if set update interval is reached so calling it often is fine
+    //clock.timeClient->update();
 }
 
 boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *manualDateTime) {
 
-    // TODO: fix logic
     if (isTimeParamsUpdated) {
         if (isNtpTime) {
             // TODO: web based time setup
+            clock.setRTCDateTime(DateTime(clock.timeClient->getEpochTime()));
         } else {
             clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
         }
@@ -47,6 +49,9 @@ boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTi
         return true;
     }
 
-    // TODO: check power loss on setup only, not every loop
-    return clock.isRTCLostPower();
+    return !clock.isRTCLostPower();
+}
+
+String SN_LoopControl::testNTPTime() {
+    return clock.timeClient->getFormattedTime();
 }

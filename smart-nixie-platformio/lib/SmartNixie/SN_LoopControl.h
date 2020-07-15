@@ -13,6 +13,7 @@ class SN_LoopControl {
         enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, OFF};
 		void doLoop(SN_LoopControl::Mode mode);
         boolean timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *manualDateTime);
+        String testNTPTime();
 
     private:
         SN_Clock clock;

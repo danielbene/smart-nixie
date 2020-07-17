@@ -1,17 +1,11 @@
 #include <Arduino.h>
 
-
-#include <NTPClient.h>
-#include <WiFiUdp.h>
-
+#include "config.h"
 #include "SN_IotWebConf.h"
 #include "SN_LoopControl.h"
 #include "Util.h"
 
 // NOTE: missing includes has to be installed from PIO library manager!
-
-//#define DELAY 250
-#define DELAY 1500
 
 DateTime countUpStart;
 DateTime countDownEnd;
@@ -19,16 +13,16 @@ SN_LoopControl::Mode mode;
 SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
 SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd, &snIotWebConf.isConnected);
 
-unsigned long loopTs = millis() + DELAY;
+unsigned long loopTs = millis() + TICK_MS;
 boolean isTimeSet = false;
 
 boolean timeUpdateCheck() {
     return snLoopControl.timeUpdate(&snIotWebConf.isTimeParamsUpdated,
-        snIotWebConf.isAutoTime, snIotWebConf.getDateTimeParam());
+        snIotWebConf.isAutoTime, snIotWebConf.getDateTimeParam(), snIotWebConf.getT);
 }
 
 void setup() {
-    if (Util::DEBUG) Serial.begin(115200);
+    if (DEBUG) Serial.begin(SERIAL_SPEED);
     snIotWebConf.setup();
 
     isTimeSet = timeUpdateCheck();
@@ -36,7 +30,6 @@ void setup() {
 
 void loop() {
     snIotWebConf.doLoop();
-    //if (snIotWebConf.isConnected) local.update();
 
     if (millis() >= loopTs) {
         if (!isTimeSet || snIotWebConf.isTimeParamsUpdated) {
@@ -45,16 +38,7 @@ void loop() {
         }
 
         snLoopControl.doLoop(mode);
-        loopTs = millis() + DELAY;
-
-        //Util::printDebugLine(snLoopControl.testNTPTime(), true);
-
-        /*if (!tmpInit) {
-            local.begin();
-            tmpInit = true;
-        }
-
-        Util::printDebugLine(local.getFormattedTime(), true);*/
+        loopTs = millis() + TICK_MS;
     }
 
 }

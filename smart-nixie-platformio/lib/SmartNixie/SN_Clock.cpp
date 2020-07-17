@@ -10,7 +10,7 @@ SN_Clock::SN_Clock(SN_Display *snDisp) {
         // TODO: error code - couldnt find RTC
     }
 
-    setupNtpClient();
+    timeClient.begin();
 }
 
 void SN_Clock::setRTCDateTime(DateTime currentDateTime) {
@@ -21,13 +21,18 @@ void SN_Clock::setupNtpClient() {
     // default update interval is 4 hours (=14400000ms)
     // 0 minute offset (its for timezone hours?)
     // in theory pool.ntp.org will find the closest server, so timezone setup not needed
-    *timeClient = NTPClient(ntpUDP, "europe.pool.ntp.org", 0, 14400000);
-    timeClient->begin();
+
+    //NTPClient local(ntpUDP, "europe.pool.ntp.org", 0, 14400000);
+    //timeClientX.begin();
 
     // FIXME: calling timeClient causes exception!!!
 
     // TODO: implement NTP usage based on this repo (https://github.com/arduino-libraries/NTPClient)
     // https://www.pool.ntp.org/zone/europe
+}
+
+NTPClient *SN_Clock::getTimeClient() {
+    return &timeClient;
 }
 
 void SN_Clock::doCountDownLoop(DateTime *countDownEnd) {

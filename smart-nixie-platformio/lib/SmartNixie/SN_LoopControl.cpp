@@ -4,10 +4,11 @@ SN_LoopControl::SN_LoopControl() {
     // NOP
 }
 
-SN_LoopControl::SN_LoopControl(DateTime *cntUpStart, DateTime *cntDownEnd) {
+SN_LoopControl::SN_LoopControl(DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConn) {
     clock = SN_Clock(&disp);
     sensor = SN_Sensor(&disp);
 
+    isConnected = isConn;
     countUpStart = cntUpStart;
     countDownEnd = cntDownEnd;
 }
@@ -32,26 +33,31 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
     }
 
     // ntp update will only do work if set update interval is reached so calling it often is fine
-    //clock.timeClient->update();
+    //if (isConnected && isNTPTime) clock.timeClient->update();
+    if (*isConnected) {
+        clock.getTimeClient()->update();
+        Util::printDebugLine(clock.getTimeClient()->getFormattedTime(), true);
+    }
 }
 
-boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *manualDateTime) {
+boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, char *manualDateTime) {
+
+    isNTPTime = isNtp;
 
     if (isTimeParamsUpdated) {
-        if (isNtpTime) {
+        if (isNTPTime) {
             // TODO: web based time setup
-            clock.setRTCDateTime(DateTime(clock.timeClient->getEpochTime()));
+            //clock.setRTCDateTime(DateTime(clock.timeClient->getEpochTime()));
+            Util::printDebugLine("NTP TIME SELECTED?!", true);
         } else {
             clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
         }
+
+        clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
 
         *isTimeParamsUpdated = false;
         return true;
     }
 
     return !clock.isRTCLostPower();
-}
-
-String SN_LoopControl::testNTPTime() {
-    return clock.timeClient->getFormattedTime();
 }

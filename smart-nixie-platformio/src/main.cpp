@@ -1,5 +1,9 @@
 #include <Arduino.h>
 
+
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+
 #include "SN_IotWebConf.h"
 #include "SN_LoopControl.h"
 #include "Util.h"
@@ -13,7 +17,7 @@ DateTime countUpStart;
 DateTime countDownEnd;
 SN_LoopControl::Mode mode;
 SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
-SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd);
+SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd, &snIotWebConf.isConnected);
 
 unsigned long loopTs = millis() + DELAY;
 boolean isTimeSet = false;
@@ -32,6 +36,7 @@ void setup() {
 
 void loop() {
     snIotWebConf.doLoop();
+    //if (snIotWebConf.isConnected) local.update();
 
     if (millis() >= loopTs) {
         if (!isTimeSet || snIotWebConf.isTimeParamsUpdated) {
@@ -42,6 +47,14 @@ void loop() {
         snLoopControl.doLoop(mode);
         loopTs = millis() + DELAY;
 
-        Util::printDebugLine(snLoopControl.testNTPTime(), true);
+        //Util::printDebugLine(snLoopControl.testNTPTime(), true);
+
+        /*if (!tmpInit) {
+            local.begin();
+            tmpInit = true;
+        }
+
+        Util::printDebugLine(local.getFormattedTime(), true);*/
     }
+
 }

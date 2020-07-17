@@ -9,11 +9,13 @@
 #include "SN_Display.h"
 #include "Util.h"
 
+static WiFiUDP ntpUDP;
+static NTPClient timeClient(ntpUDP, "time.google.com", 0, 30000);
+
 class SN_Clock {
     public:
         SN_Clock();
         SN_Clock(SN_Display *snDisp);
-        NTPClient *timeClient;
         void displayCurrentTime();
         void doCountDownLoop(DateTime *countDownEnd);
         void doCountUpLoop(DateTime *countUpStart);
@@ -21,11 +23,11 @@ class SN_Clock {
         void setRTCDateTime(DateTime currentDateTime);
         boolean isRTCLostPower();
         DateTime getCurrentDateTime();
+        NTPClient *getTimeClient();
 
     private:
         SN_Display *disp;
         RTC_DS3231 rtc;
-        WiFiUDP ntpUDP;
         int getCurrentTimeAsDec();
         void displayTime(int decTime);
         void setupNtpClient();

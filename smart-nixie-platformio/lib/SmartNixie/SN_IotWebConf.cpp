@@ -5,6 +5,7 @@ DateTime *SN_IotWebConf::countUpStart = NULL;
 DateTime *SN_IotWebConf::countDownEnd = NULL;
 boolean SN_IotWebConf::isTimeParamsUpdated = false;
 boolean SN_IotWebConf::isAutoTime = false;
+boolean SN_IotWebConf::isConnected = false;
 
 SN_IotWebConf::SN_IotWebConf() {
 	//NOP
@@ -97,6 +98,8 @@ void SN_IotWebConf::onConnect() {
 	// after reinit (takes some time) it is reachable on nixie.local dns (on the local network)
 	// android do not support mdns
 	MDNS.begin("nixie");
+
+	isConnected = true;
 }
 
 boolean SN_IotWebConf::formValidator() {

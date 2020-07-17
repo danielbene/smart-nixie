@@ -12,7 +12,7 @@ class SN_LoopControl {
         SN_LoopControl(DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConnected);
         enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, OFF};
 		void doLoop(SN_LoopControl::Mode mode);
-        boolean timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *manualDateTime);
+        boolean timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *tzOffset, char *manualDateTime);
 
     private:
         SN_Clock clock;

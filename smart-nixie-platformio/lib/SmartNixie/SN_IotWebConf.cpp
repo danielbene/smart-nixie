@@ -62,8 +62,12 @@ char *SN_IotWebConf::getDateTimeParam() {
 	return &dateTimeParamValue[0];
 }
 
-char *SN_IotWebConf::getTZIDParam() {
-	return tzidParamValue;
+//char *SN_IotWebConf::getTZIDParam() {
+//	return tzidParamValue;
+//}
+
+char *SN_IotWebConf::getTZOffsetParam() {
+	return tzOffsetHours;
 }
 
 /*char *SN_IotWebConf::getMac1Param() {
@@ -81,13 +85,10 @@ char *SN_IotWebConf::getMac3Param() {
 void SN_IotWebConf::onConfigSaved() {
 	Util::printDebugLine("Configuration was updated.", true);
 
-	if (dateTimeParamValue != "" || tzidParamValue != "") {
+	// TODO: this logic is not quite right
+	if (dateTimeParamValue != "" || tzOffsetHours != "") {
 		isTimeParamsUpdated = true;
-		if (dateTimeParamValue != "") {
-			isAutoTime = false;
-		} else {
-			isAutoTime = true;
-		}
+		isAutoTime = (tzOffsetHours != "");
 	}
 }
 

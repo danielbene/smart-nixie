@@ -33,21 +33,23 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
     }
 
     // ntp update will only do work if set update interval is reached so calling it often is fine
-    //if (isConnected && isNTPTime) clock.timeClient->update();
     if (*isConnected) {
         clock.getTimeClient()->update();
         Util::printDebugLine(clock.getTimeClient()->getFormattedTime(), true);
     }
 }
 
-boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, char *manualDateTime) {
-
+boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, char *tzOffset, char *manualDateTime) {
     isNTPTime = isNtp;
 
     if (isTimeParamsUpdated) {
         if (isNTPTime) {
             // TODO: web based time setup
             //clock.setRTCDateTime(DateTime(clock.timeClient->getEpochTime()));
+
+
+            // TODO: fix this, and iotwebconf tzoffset parameter
+            clock.setNTPOffset();
             Util::printDebugLine("NTP TIME SELECTED?!", true);
         } else {
             clock.setRTCDateTime(Util::charToDateTime(manualDateTime));

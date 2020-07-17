@@ -25,13 +25,15 @@ static ESP8266WebServer server(80);
 static IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword);
 
 static char dateTimeParamValue[STRING_LEN];
-static char tzidParamValue[STRING_LEN];
+//static char tzidParamValue[STRING_LEN];
+static char tzOffsetHours[2];
 //static char mac1ParamValue[STRING_LEN];
 //static char mac2ParamValue[STRING_LEN];
 //static char mac3ParamValue[STRING_LEN];
 static IotWebConfSeparator timeSeparator = IotWebConfSeparator("Manual/Auto time settings");
 static IotWebConfParameter dateTimeParam = IotWebConfParameter("Current time for manual setup", "dateTimeParam", dateTimeParamValue, STRING_LEN, "text", "2020.12.25 13:30:25", "");
-static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone for automatic setup", "tzidParam", tzidParamValue, STRING_LEN, "text", "Europe/Budapest", "");
+//static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone for automatic setup", "tzidParam", tzidParamValue, STRING_LEN, "text", "Europe/Budapest", "");
+static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone offset from UTC in hours", "tzOffset", tzOffsetHours, 2, "number", "-1", "");
 //static IotWebConfSeparator turnoffSeparator = IotWebConfSeparator("Auto turnoff settings");
 //static IotWebConfParameter mac1Param = IotWebConfParameter("Device 1 MAC address", "mac1Param", mac1ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
 //static IotWebConfParameter mac2Param = IotWebConfParameter("Device 2 MAC address", "mac2Param", mac2ParamValue, STRING_LEN, "text", "12:34:56:78:9A:BC", "");
@@ -50,8 +52,9 @@ class SN_IotWebConf {
 		void setup();
         void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
-        char* getDateTimeParam();
-        char* getTZIDParam();
+        char *getDateTimeParam();
+        //char* getTZIDParam();
+        char *getTZOffsetParam();
         /*char *getMac1Param();
         char *getMac2Param();
         char *getMac3Param();*/

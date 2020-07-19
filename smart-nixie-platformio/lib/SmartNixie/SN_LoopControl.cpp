@@ -42,22 +42,29 @@ void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
 boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, char *tzOffset, char *manualDateTime) {
     isNTPTime = isNtp;
 
+    String msg[] = {"TIMEUPDATE: ", "isNTP - ", String(isNTPTime), " / offsetSec - ", String(atoi(tzOffset) * 3600), " / currentNTPTime - ", clock.getTimeClient()->getFormattedTime(), " / isParamsUpdated - ", String(*isTimeParamsUpdated), " / manualDateTime - ", String(*manualDateTime), " / isConnected - ", String(*isConnected)};
+    Util::printDebugLine(msg, msg->length(), true);
+
+    //TODO: hard refactor
     if (isTimeParamsUpdated) {
         if (isNTPTime) {
-            // TODO: web based time setup
-            //clock.setRTCDateTime(DateTime(clock.timeClient->getEpochTime()));
+            clock.setNTPOffset(atoi(tzOffset));
 
-
-            // TODO: fix this, and iotwebconf tzoffset parameter
-            clock.setNTPOffset(int(tzOffset));
-            Util::printDebugLine("NTP TIME SELECTED?!", true);
-            Util::printDebugLine(String(*tzOffset), true);
+            if (*isConnected) {
+                clock.setRTCDateTime(clock.getTimeClient()->getEpochTime());
+                *isTimeParamsUpdated = false;
+                return true;
+            }
         } else {
             clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
         }
 
         clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
 
+        *isTimeParamsUpdated = false;
+        return true;
+    } else if (isNTPTime && *isConnected) {
+        clock.setRTCDateTime(clock.getTimeClient()->getEpochTime());
         *isTimeParamsUpdated = false;
         return true;
     }

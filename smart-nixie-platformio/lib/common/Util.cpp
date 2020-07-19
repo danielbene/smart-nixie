@@ -1,12 +1,12 @@
 #include "Util.h"
 
-boolean Util::isValidDate(const char* dateTime) {
+boolean Util::isValidDate(const char *dateTime) {
 	//TODO: proper datetime validation for format - yyyy.mm.dd HH24:mm:ss
     printDebugLine("UNIMPLEMENTED METHOD USED! - Util::isValidDate", true);
 	return true;
 }
 
-boolean Util::isValidMacAddress(const char* mac) {
+boolean Util::isValidMacAddress(const char *mac) {
 	int i = 0;
 	int s = 0;
 

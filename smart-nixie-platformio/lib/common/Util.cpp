@@ -47,14 +47,14 @@ DateTime Util::charToDateTime(char *dateStr) {
 }
 
 void Util::printDebugLine(String param, boolean addNewLine) {
-	if (DEBUG) {
+	if (SN_DEBUG) {
 		Serial.print(param);
 		if (addNewLine) Serial.println();
 	}
 }
 
 void Util::printDebugLine(String params[], int paramSize, boolean addNewLine) {
-	if (DEBUG) {
+	if (SN_DEBUG) {
 		for (int i = 0; i < paramSize; i++) {
 			Serial.print(params[i]);
 		}

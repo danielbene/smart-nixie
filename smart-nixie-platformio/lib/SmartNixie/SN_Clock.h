@@ -6,12 +6,11 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
-#include "config.h"
 #include "SN_Display.h"
 #include "Util.h"
 
 static WiFiUDP ntpUDP;
-static NTPClient timeClient(ntpUDP, NTP_SERVER, 0, NTP_UPDATE_MS);
+static NTPClient timeClient(ntpUDP, SN_NTP_SERVER, 0, SN_NTP_UPDATE_MS);
 
 class SN_Clock {
     public:

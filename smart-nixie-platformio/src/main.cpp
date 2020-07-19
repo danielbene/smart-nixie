@@ -1,6 +1,5 @@
 #include <Arduino.h>
 
-#include "config.h"
 #include "SN_IotWebConf.h"
 #include "SN_LoopControl.h"
 #include "Util.h"
@@ -13,16 +12,16 @@ SN_LoopControl::Mode mode;
 SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
 SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd, &snIotWebConf.isConnected);
 
-unsigned long loopTs = millis() + TICK_MS;
+unsigned long loopTs = millis() + SN_TICK_MS;
 boolean isTimeSet = false;
 
 boolean timeUpdateCheck() {
     return snLoopControl.timeUpdate(&snIotWebConf.isTimeParamsUpdated,
-        snIotWebConf.isAutoTime, snIotWebConf.getDateTimeParam(), snIotWebConf.getT);
+        snIotWebConf.isAutoTime, snIotWebConf.getTZOffsetParam(), snIotWebConf.getDateTimeParam());
 }
 
 void setup() {
-    if (DEBUG) Serial.begin(SERIAL_SPEED);
+    if (SN_DEBUG) Serial.begin(SN_SERIAL_SPEED);
     snIotWebConf.setup();
 
     isTimeSet = timeUpdateCheck();
@@ -38,7 +37,7 @@ void loop() {
         }
 
         snLoopControl.doLoop(mode);
-        loopTs = millis() + TICK_MS;
+        loopTs = millis() + SN_TICK_MS;
     }
 
 }

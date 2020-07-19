@@ -4,8 +4,6 @@
 #include <Arduino.h>
 #include <RTClib.h>
 
-#include "config.h"
-
 class Util {
     public:
         static boolean isValidDate(const char* dateTime);

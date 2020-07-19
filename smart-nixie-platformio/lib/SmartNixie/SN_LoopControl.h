@@ -2,6 +2,7 @@
 #define SN_LOOPCONTROL_H
 
 #include <Arduino.h>
+
 #include "SN_Clock.h"
 #include "SN_Display.h"
 #include "SN_Sensor.h"

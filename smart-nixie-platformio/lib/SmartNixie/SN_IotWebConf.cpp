@@ -98,7 +98,7 @@ void SN_IotWebConf::onConnect() {
 
 	// after reinit (takes some time) it is reachable on nixie.local dns (on the local network)
 	// android do not support mdns
-	MDNS.begin("nixie");
+	MDNS.begin(SN_MDNS_NAME);
 
 	isConnected = true;
 }

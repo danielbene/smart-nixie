@@ -42,7 +42,7 @@ void SN_Clock::doCountUpLoop(DateTime *countUpStart) {
 
     TimeSpan diff = current - start;
 
-    if (diff.totalseconds() <= MAX_DISPLAYABLE_SECS) {
+    if (diff.totalseconds() <= SN_MAX_DISPLAYABLE_SECS) {
         displayTime(diff.minutes() * 100 + diff.seconds());
     } else {
         disp->flash(9959);

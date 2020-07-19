@@ -45,28 +45,23 @@ boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, 
     String msg[] = {"TIMEUPDATE: ", "isNTP - ", String(isNTPTime), " / offsetSec - ", String(atoi(tzOffset) * 3600), " / currentNTPTime - ", clock.getTimeClient()->getFormattedTime(), " / isParamsUpdated - ", String(*isTimeParamsUpdated), " / manualDateTime - ", String(*manualDateTime), " / isConnected - ", String(*isConnected)};
     Util::printDebugLine(msg, msg->length(), true);
 
-    //String msg2[] = {"TIME PARAM INIT VALUES: ", String(atoi(tzOffset)), " / ", String(manualDateTime)};
-    //Util::printDebugLine(msg2, msg2->length(), true);
+    /*
+    1. If the RTC doesnt loose power than we can expect that there is a correct time set!
 
+    2. If it lost power than check iotwebconf params and set manual or ntp time:
+        - ntp has priority - until it connects to wifi show error
+        - if its manual than simply set it
 
-    /*if (clock.isRTCLostPower()) {
-        if (tzOffset == "" && manualDateTime == "") {
-            // nothing to set rtc to
-            return false;
-        } else if (tzOffset != "") {
-            clock.setNTPOffset(atoi(tzOffset));
+    3. If it does not lost it and
+        - ntp based time is set, than handle the periodic time corrections after wifi connected.
+        - manual is set, than do nothing! (Theoretically the known time is correct - thats what RTC is for.)
 
-            if (*isConnected) {
-                clock.setRTCDateTime(clock.getTimeClient()->getEpochTime());
-                *isTimeParamsUpdated = false;
-                return true;
-            }
-        } else {
-            clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
-            return true;
-        }
-    }*/
+    4. If update detected (make separate method triggered from onConfigSaved callback) in iotwebconf parameters than 
+        - refresh the offset (+force update ntp)
+        - or update time based on manual
 
+    1-3 cases will affect the isTimeSet var in main and decides the startup time
+    */
 
     //TODO: hard refactor
     if (isTimeParamsUpdated) {

@@ -49,8 +49,9 @@ boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, 
 
 
             // TODO: fix this, and iotwebconf tzoffset parameter
-            clock.setNTPOffset();
+            clock.setNTPOffset(int(tzOffset));
             Util::printDebugLine("NTP TIME SELECTED?!", true);
+            Util::printDebugLine(String(*tzOffset), true);
         } else {
             clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
         }

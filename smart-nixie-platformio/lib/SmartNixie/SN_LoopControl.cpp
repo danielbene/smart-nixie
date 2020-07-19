@@ -45,6 +45,29 @@ boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, 
     String msg[] = {"TIMEUPDATE: ", "isNTP - ", String(isNTPTime), " / offsetSec - ", String(atoi(tzOffset) * 3600), " / currentNTPTime - ", clock.getTimeClient()->getFormattedTime(), " / isParamsUpdated - ", String(*isTimeParamsUpdated), " / manualDateTime - ", String(*manualDateTime), " / isConnected - ", String(*isConnected)};
     Util::printDebugLine(msg, msg->length(), true);
 
+    //String msg2[] = {"TIME PARAM INIT VALUES: ", String(atoi(tzOffset)), " / ", String(manualDateTime)};
+    //Util::printDebugLine(msg2, msg2->length(), true);
+
+
+    /*if (clock.isRTCLostPower()) {
+        if (tzOffset == "" && manualDateTime == "") {
+            // nothing to set rtc to
+            return false;
+        } else if (tzOffset != "") {
+            clock.setNTPOffset(atoi(tzOffset));
+
+            if (*isConnected) {
+                clock.setRTCDateTime(clock.getTimeClient()->getEpochTime());
+                *isTimeParamsUpdated = false;
+                return true;
+            }
+        } else {
+            clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
+            return true;
+        }
+    }*/
+
+
     //TODO: hard refactor
     if (isTimeParamsUpdated) {
         if (isNTPTime) {
@@ -57,6 +80,7 @@ boolean SN_LoopControl::timeUpdate(boolean *isTimeParamsUpdated, boolean isNtp, 
             }
         } else {
             clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
+            return true;
         }
 
         clock.setRTCDateTime(Util::charToDateTime(manualDateTime));

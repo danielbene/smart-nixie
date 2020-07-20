@@ -65,13 +65,11 @@ void SN_LoopControl::timeParamUpdate() {
 
 boolean SN_LoopControl::timeUpdate() {
     if (!clock.isRTCLostPower()){
-        Util::printDebugLine("FOUND RTC TIME", true);
+        //NOP - time setup is fine / may gets logic later
     } else if (strlen(tzOffset) != 0) {
         clock.setNTPOffset(atoi(tzOffset));
-        Util::printDebugLine("NO RTC TIME - SET NTP", true);
     } else if (strlen(manualDateTime) != 0) {
         clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
-        Util::printDebugLine("NO RTC TIME - SET MANUAL", true);
     } else {
         *mode = Mode::ERROR;
         Util::printDebugLine("NO RTC TIME - NO PARAMS - ERROR", true);
@@ -86,7 +84,7 @@ boolean SN_LoopControl::timeUpdate() {
 }
 
 void SN_LoopControl::resetTimeParams() {
-    Util::printDebugLine("RESET TIME PARAMS", true);
+    Util::printDebugLine("RESET IOTWEBCONF TIME PARAMS", true);
     *tzOffset = (char) 0;
     *manualDateTime = (char) 0;
 }

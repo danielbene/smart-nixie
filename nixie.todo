@@ -1,6 +1,6 @@
   [x] update the frickin readme!!!
   [ ] upload documentation, pictures, pogress
-  [ ] write inline docs
+  [ ] write inline docs - credits, author, brief etc in modul file headers
 
   [x] test tube with driver
   [x] test mcp io expander
@@ -12,7 +12,7 @@
   [x] implement countdown
   [x] countdown input value
   [x] implement countup
-  [ ] implement MAC based autoturnoff
+  [ ] implement MAC based autoturnoff - PROBLEMATIC
   [x] implement time setup (timezone based / manual setup) - blocked by IotWebConf impl
   [x] implement sensors (bme temp/hum/air pressure?/altitude?)
   [ ] blank left tube before 12:00? / blanking in countdown, countup?

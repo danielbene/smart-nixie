@@ -39,12 +39,18 @@ void SN_LoopControl::doLoop() {
 
     // ntp update will only do work if set update interval is reached so calling it often is fine
     if (*isConnected) {
+        //TODO: remove if periodic update not available
         clock.getTimeClient()->update();
         Util::printDebugLine(clock.getTimeClient()->getFormattedTime(), true);
     }
 }
 
 void SN_LoopControl::timeParamUpdate() {
+
+    //TODO: NTP update, and periodic correction may not be useful with the current aproach
+    //after a poweroff it cannot be decided if the stored time is based on NTP because of the
+    //iotwebconf tzOffset param reset - EEPROM stored flag may solve this
+
     if (strlen(tzOffset) != 0) {
         Util::printDebugLine("TIME PARAM UPDATE - NTP OFFSET", true);
         clock.setNTPOffset(atoi(tzOffset));
@@ -59,8 +65,6 @@ void SN_LoopControl::timeParamUpdate() {
 
 boolean SN_LoopControl::timeUpdate() {
     if (!clock.isRTCLostPower()){
-        //we still have ~correct time in RTC
-        //TODO: handling periodic ntp corrections outside
         Util::printDebugLine("FOUND RTC TIME", true);
     } else if (strlen(tzOffset) != 0) {
         clock.setNTPOffset(atoi(tzOffset));

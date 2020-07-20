@@ -10,7 +10,7 @@
 #include "SN_LoopControl.h"
 #include "Util.h"
 
-#define CONFIG_VERSION "asd2"
+#define CONFIG_VERSION "nixie.1"
 #define CONFIG_PIN D5
 #define STATUS_PIN LED_BUILTIN
 

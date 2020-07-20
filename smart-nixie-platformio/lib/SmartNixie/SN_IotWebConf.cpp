@@ -61,6 +61,7 @@ char *SN_IotWebConf::getTZOffsetParam() {
 }
 
 void SN_IotWebConf::onConfigSaved() {
+	// NOP - may gets logic later
 	Util::printDebugLine("Configuration was updated.", true);
 }
 
@@ -68,9 +69,7 @@ void SN_IotWebConf::onConnect() {
 	MDNS.close();
 	delay(100);
 
-	// after reinit (takes some time) it is reachable on nixie.local dns (on the local network)
-	// android do not support mdns
-	MDNS.begin(SN_MDNS_NAME);
+	MDNS.begin(SN_MDNS_NAME); // will be reachable on SN_MDNS_NAME.local URL (Android do not support mDNS URLs)
 
 	isConnected = true;
 }
@@ -111,7 +110,7 @@ void SN_IotWebConf::onCountUpState() {
 }
 
 void SN_IotWebConf::onCountDownState() {
-	int minutes = server.arg("minutes").toInt();	// web page text input field
+	int minutes = server.arg("minutes").toInt(); // web page text input field
 	*currentMode = SN_LoopControl::Mode::COUNTDOWN;
 	*countDownEnd = Util::calculateFutureTime(minutes);
 

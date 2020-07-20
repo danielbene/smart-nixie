@@ -4,8 +4,6 @@
 #include "SN_LoopControl.h"
 #include "Util.h"
 
-// NOTE: missing includes has to be installed from PIO library manager!
-
 DateTime countUpStart;
 DateTime countDownEnd;
 SN_LoopControl::Mode mode;

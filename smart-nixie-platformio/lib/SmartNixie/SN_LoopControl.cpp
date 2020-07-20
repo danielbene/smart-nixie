@@ -1,50 +1,90 @@
 #include "SN_LoopControl.h"
 
 SN_LoopControl::SN_LoopControl() {
-    clock = SN_Clock(&disp);
-    sensor = SN_Sensor(&disp);
+    // NOP
 }
 
-SN_LoopControl::SN_LoopControl(DateTime *cntUpStart) {
+SN_LoopControl::SN_LoopControl(char *tzOffsetParam, char *manualDateTimeDateTimeParam, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConn, Mode *modeParam) {
     clock = SN_Clock(&disp);
     sensor = SN_Sensor(&disp);
 
+    tzOffset = tzOffsetParam;
+    manualDateTime = manualDateTimeDateTimeParam;
+
+    isConnected = isConn;
     countUpStart = cntUpStart;
+    countDownEnd = cntDownEnd;
+
+    mode = modeParam;
 }
 
 // this is the main logic node - displayed numbers gets decided here
-void SN_LoopControl::doLoop(SN_LoopControl::Mode mode) {
+void SN_LoopControl::doLoop() {
 
-    if (mode == SN_LoopControl::Mode::CLOCK) {
+    if (*mode == SN_LoopControl::Mode::CLOCK) {
         clock.displayCurrentTime();
-    } else if (mode == SN_LoopControl::Mode::COUNTUP) {
-        // TODO: add handling for >99:59
+    } else if (*mode == SN_LoopControl::Mode::COUNTUP) {
+        // TODO: add handling for >99:59 (low prior)
         clock.doCountUpLoop(countUpStart);
-    } else if (mode == SN_LoopControl::Mode::COUNTDOWN) {
-        // TODO countdown value set - blocked by web UI
-        clock.setCountDown(1);
-        clock.doCountDownLoop();
-    } else if (mode == SN_LoopControl::Mode::SENSOR) {
+    } else if (*mode == SN_LoopControl::Mode::COUNTDOWN) {
+        clock.doCountDownLoop(countDownEnd);
+    } else if (*mode == SN_LoopControl::Mode::SENSOR) {
         sensor.displayCurrentValues();
-    } else if (mode == SN_LoopControl::Mode::ERROR) {
+    } else if (*mode == SN_LoopControl::Mode::ERROR) {
         // TODO error handling
         disp.flash(9999);
-    } else if (mode == SN_LoopControl::Mode::OFF) {
+    } else if (*mode == SN_LoopControl::Mode::OFF) {
         disp.turnOff();
-    } else {
-        // TODO error - non-valid mode
     }
 
+    // ntp update will only do work if set update interval is reached so calling it often is fine
+    if (*isConnected) {
+        //TODO: remove if periodic update not available
+        clock.getTimeClient()->update();
+        Util::printDebugLine(clock.getTimeClient()->getFormattedTime(), true);
+    }
 }
 
-void SN_LoopControl::adjustRTC(char* dateParam) {
-    tm tm1;
-	sscanf(dateParam,"%4d.%2d.%2d %2d:%2d:%2d",&tm1.tm_year, &tm1.tm_mon,
-            &tm1.tm_mday, &tm1.tm_hour, &tm1.tm_min, &tm1.tm_sec);
+void SN_LoopControl::timeParamUpdate() {
 
-    clock.setRTCDateTime(DateTime(tm1.tm_year, tm1.tm_mon, tm1.tm_mday, tm1.tm_hour, tm1.tm_min, tm1.tm_sec));
+    //TODO: NTP update, and periodic correction may not be useful with the current aproach
+    //after a poweroff it cannot be decided if the stored time is based on NTP because of the
+    //iotwebconf tzOffset param reset - EEPROM stored flag may solve this
+
+    if (strlen(tzOffset) != 0) {
+        Util::printDebugLine("TIME PARAM UPDATE - NTP OFFSET", true);
+        clock.setNTPOffset(atoi(tzOffset));
+        clock.setRTCDateTime(clock.getTimeClient()->getEpochTime());
+    } else if (strlen(manualDateTime) != 0) {
+        Util::printDebugLine("TIME PARAM UPDATE - MANUAL DATETIME", true);
+        clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
+    }
+
+    resetTimeParams();
 }
 
-boolean SN_LoopControl::isRTCLostPower() {
-    return clock.isRTCLostPower();
+boolean SN_LoopControl::timeUpdate() {
+    if (!clock.isRTCLostPower()){
+        //NOP - time setup is fine / may gets logic later
+    } else if (strlen(tzOffset) != 0) {
+        clock.setNTPOffset(atoi(tzOffset));
+    } else if (strlen(manualDateTime) != 0) {
+        clock.setRTCDateTime(Util::charToDateTime(manualDateTime));
+    } else {
+        *mode = Mode::ERROR;
+        Util::printDebugLine("NO RTC TIME - NO PARAMS - ERROR", true);
+        return false;
+    }
+
+    *mode = Mode::CLOCK;
+    resetTimeParams();
+    
+    Util::printDebugLine("TIME SET SUCCESSFULLY", true);
+    return true;
+}
+
+void SN_LoopControl::resetTimeParams() {
+    Util::printDebugLine("RESET IOTWEBCONF TIME PARAMS", true);
+    *tzOffset = (char) 0;
+    *manualDateTime = (char) 0;
 }

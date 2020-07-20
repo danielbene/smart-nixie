@@ -7,10 +7,12 @@ Main aspects of the project:
 - working four digit nixie clock display (as you probably guessed)  
 - wifi connection  
 - manual or automatic mode for time setting  
-  - automatic time updates from the web  
+  - automatic time updates from the web - configurable NTP time server  
+  - timezone offset can be set dinamically from the config page  
 - OOP code (YASSS!!! 'Duinos needs more sweet-sweet object-oriented love)  
 - webpage based control panel  
   - by using mdns the clock has it's own domain address in the local network  
+  - Androids do not support mDNS so there is option for static ip in the config page  
 - timed AP mode (broadcasting his own network) for the essential setups  
 - count up/down timers  
 - humidity and temperature values  

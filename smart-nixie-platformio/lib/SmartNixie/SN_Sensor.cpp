@@ -10,7 +10,7 @@ SN_Sensor::SN_Sensor(SN_Display *snDisp) {
     presUnit = BME280::PresUnit(BME280::PresUnit_hPa);
 
     if (!bme.begin()) {
-        Serial.println("ERROR - Could not find BME sensor.");
+        Util::printDebugLine("ERROR - Could not find BME sensor.", true);
         // TODO: error handling
     }
 }
@@ -24,16 +24,4 @@ void SN_Sensor::displayCurrentValues() {
 
 void SN_Sensor::readValues() {
     bme.read(pres, temp, hum, tempUnit, presUnit);
-}
-
-void SN_Sensor::testRead() {
-    bme.read(pres, temp, hum, tempUnit, presUnit);
-
-    Serial.println("-------------------------------");
-    Serial.print("Temperature: ");
-    Serial.println(temp);
-    Serial.print("Humidity: ");
-    Serial.println(hum);
-    Serial.print("Pressure: ");
-    Serial.println(pres);
 }

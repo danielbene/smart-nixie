@@ -36,11 +36,8 @@ class SN_IotWebConf {
     public:
         SN_IotWebConf();
         SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart, DateTime *cntDownEnd);
-        static boolean isTimeParamsUpdated;
-        static boolean isAutoTime;
         static boolean isConnected;
 		void setup();
-        void setTimeParamsUpdated(boolean isUpdated);
 		void doLoop();
         char *getDateTimeParam();
         char *getTZOffsetParam();

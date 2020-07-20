@@ -9,17 +9,21 @@
 
 class SN_LoopControl {
     public:
-        SN_LoopControl();
-        SN_LoopControl(DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConnected);
         enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, OFF};
-		void doLoop(SN_LoopControl::Mode mode);
-        boolean timeUpdate(boolean *isTimeParamsUpdated, boolean isNtpTime, char *tzOffset, char *manualDateTime);
+        SN_LoopControl();
+        SN_LoopControl(char *tzOffset, char *manualDateTime, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConnected, Mode *mode);
+		void doLoop();
+        void timeParamUpdate();
+        boolean timeUpdate();
 
     private:
+        char *manualDateTime;
+        char *tzOffset;
+        Mode *mode;
+        void resetTimeParams();
         SN_Clock clock;
         SN_Display disp;
         SN_Sensor sensor;
-        boolean isNTPTime;
         boolean *isConnected;
         DateTime *countUpStart;
         DateTime *countDownEnd;

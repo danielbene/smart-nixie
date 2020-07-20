@@ -10,33 +10,29 @@ DateTime countUpStart;
 DateTime countDownEnd;
 SN_LoopControl::Mode mode;
 SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
-SN_LoopControl snLoopControl = SN_LoopControl(&countUpStart, &countDownEnd, &snIotWebConf.isConnected);
+SN_LoopControl snLoopControl = SN_LoopControl(snIotWebConf.getTZOffsetParam(), snIotWebConf.getDateTimeParam(), &countUpStart, &countDownEnd, &snIotWebConf.isConnected, &mode);
 
 unsigned long loopTs = millis() + SN_TICK_MS;
 boolean isTimeSet = false;
-
-boolean timeUpdateCheck() {
-    return snLoopControl.timeUpdate(&snIotWebConf.isTimeParamsUpdated,
-        snIotWebConf.isAutoTime, snIotWebConf.getTZOffsetParam(), snIotWebConf.getDateTimeParam());
-}
 
 void setup() {
     if (SN_DEBUG) Serial.begin(SN_SERIAL_SPEED);
     snIotWebConf.setup();
 
-    isTimeSet = timeUpdateCheck();
+    isTimeSet = snLoopControl.timeUpdate();
 }
 
 void loop() {
     snIotWebConf.doLoop();
 
     if (millis() >= loopTs) {
-        if (!isTimeSet || snIotWebConf.isTimeParamsUpdated) {
-            mode = SN_LoopControl::Mode::ERROR;
-            isTimeSet = timeUpdateCheck();
+        if (!isTimeSet) {
+            isTimeSet = snLoopControl.timeUpdate();
+        } else if (strlen(snIotWebConf.getTZOffsetParam()) != 0 || strlen(snIotWebConf.getDateTimeParam()) != 0) {
+            snLoopControl.timeParamUpdate();
         }
 
-        snLoopControl.doLoop(mode);
+        snLoopControl.doLoop();
         loopTs = millis() + SN_TICK_MS;
     }
 

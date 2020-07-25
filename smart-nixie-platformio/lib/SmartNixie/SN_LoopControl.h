@@ -9,7 +9,7 @@
 
 class SN_LoopControl {
     public:
-        enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, OFF};
+        enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, SLOTMACHINE, OFF};
         SN_LoopControl();
         SN_LoopControl(char *tzOffset, char *manualDateTime, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConnected, Mode *mode);
 		void doLoop();
@@ -21,12 +21,14 @@ class SN_LoopControl {
         char *tzOffset;
         Mode *mode;
         void resetTimeParams();
+        void slotmachineCheck();
         SN_Clock clock;
         SN_Display disp;
         SN_Sensor sensor;
         boolean *isConnected;
         DateTime *countUpStart;
         DateTime *countDownEnd;
+        DateTime slotmachineStart;
 
 };
 

@@ -19,6 +19,7 @@ class SN_Clock {
         void displayCurrentTime();
         void doCountDownLoop(DateTime *countDownEnd);
         void doCountUpLoop(DateTime *countUpStart);
+        boolean doSlotmachineLoop(DateTime *slotmachineStart);
         void setNTPOffset(int hours);
         void setRTCDateTime(DateTime currentDateTime);
         boolean isRTCLostPower();

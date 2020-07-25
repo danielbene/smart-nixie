@@ -21,19 +21,22 @@ SN_LoopControl::SN_LoopControl(char *tzOffsetParam, char *manualDateTimeDateTime
 // this is the main logic node - displayed numbers gets decided here
 void SN_LoopControl::doLoop() {
 
-    if (*mode == SN_LoopControl::Mode::CLOCK) {
+    if (*mode == Mode::CLOCK) {
         clock.displayCurrentTime();
-    } else if (*mode == SN_LoopControl::Mode::COUNTUP) {
+        slotmachineCheck();
+    } else if (*mode == Mode::COUNTUP) {
         // TODO: add handling for >99:59 (low prior)
         clock.doCountUpLoop(countUpStart);
-    } else if (*mode == SN_LoopControl::Mode::COUNTDOWN) {
+    } else if (*mode == Mode::COUNTDOWN) {
         clock.doCountDownLoop(countDownEnd);
-    } else if (*mode == SN_LoopControl::Mode::SENSOR) {
+    } else if (*mode == Mode::SENSOR) {
         sensor.displayCurrentValues();
-    } else if (*mode == SN_LoopControl::Mode::ERROR) {
+    } else if (*mode == Mode::SLOTMACHINE && clock.doSlotmachineLoop(&slotmachineStart)) {
+        *mode = Mode::CLOCK;
+    } else if (*mode == Mode::ERROR) {
         // TODO error handling
         disp.flash(9999);
-    } else if (*mode == SN_LoopControl::Mode::OFF) {
+    } else if (*mode == Mode::OFF) {
         disp.turnOff();
     }
 
@@ -87,4 +90,14 @@ void SN_LoopControl::resetTimeParams() {
     Util::printDebugLine("RESET IOTWEBCONF TIME PARAMS", true);
     *tzOffset = (char) 0;
     *manualDateTime = (char) 0;
+}
+
+void SN_LoopControl::slotmachineCheck() {
+    //this is called only if clock mode active
+    DateTime now = clock.getCurrentDateTime();
+    if (Util::charToTime(SN_SLOTMACHINE_START).hour() == now.hour() && Util::charToTime(SN_SLOTMACHINE_START).minute() == now.minute()) {
+        Util::printDebugLine("ITS SLOTMACHINE TIME", true);
+        *mode = Mode::SLOTMACHINE;
+        slotmachineStart = now;
+    }
 }

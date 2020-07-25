@@ -40,10 +40,17 @@ DateTime Util::calculateFutureTime(int32_t minutes) {
 **/
 DateTime Util::charToDateTime(char *dateStr) {
 	tm tm1;
-	sscanf(dateStr,"%4d.%2d.%2d %2d:%2d:%2d",&tm1.tm_year, &tm1.tm_mon,
+	sscanf(dateStr, "%4d.%2d.%2d %2d:%2d:%2d", &tm1.tm_year, &tm1.tm_mon,
             &tm1.tm_mday, &tm1.tm_hour, &tm1.tm_min, &tm1.tm_sec);
 
     return DateTime(tm1.tm_year, tm1.tm_mon, tm1.tm_mday, tm1.tm_hour, tm1.tm_min, tm1.tm_sec);
+}
+
+DateTime Util::charToTime(char *timeStr) {
+	tm tm1;
+	sscanf(timeStr, "%2d:%2d", &tm1.tm_hour, &tm1.tm_min);
+
+    return DateTime(1970, 1, 1, tm1.tm_hour, tm1.tm_min, 1);
 }
 
 void Util::printDebugLine(String param, boolean addNewLine) {

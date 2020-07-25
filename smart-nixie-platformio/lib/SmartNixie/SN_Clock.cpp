@@ -49,6 +49,28 @@ void SN_Clock::doCountUpLoop(DateTime *countUpStart) {
     }
 }
 
+boolean SN_Clock::doSlotmachineLoop(DateTime *slotmachineStart) {
+    //TODO: refact these TimeSpans
+    DateTime currentDateTime = rtc.now();
+    TimeSpan current(currentDateTime.day(), currentDateTime.hour(), currentDateTime.minute(), currentDateTime.second());
+    TimeSpan start((*slotmachineStart).day(), (*slotmachineStart).hour(), (*slotmachineStart).minute(), (*slotmachineStart).second());
+
+    TimeSpan diff = current - start;
+
+    if (diff.totalseconds() > 100) {
+        return true;
+    } else if (diff.totalseconds() < 10) {
+        disp->fillZeros();
+    } else {
+        int cycle = (int)diff.totalseconds() / 10;
+        int cathodeNums = cycle * 1000 + cycle * 100 + cycle * 10 + cycle;
+
+        disp->showDec(cathodeNums);
+    }
+
+    return false;
+}
+
 // set the timezone of the NTP updates (UTC +-hours)
 void SN_Clock::setNTPOffset(int hours) {
     timeClient.setTimeOffset(hours * 3600);

@@ -8,7 +8,7 @@ DateTime countUpStart;
 DateTime countDownEnd;
 SN_LoopControl::Mode mode;
 SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
-SN_LoopControl snLoopControl = SN_LoopControl(snIotWebConf.getTZOffsetParam(), snIotWebConf.getDateTimeParam(), &countUpStart, &countDownEnd, &snIotWebConf.isConnected, &mode);
+SN_LoopControl snLoopControl = SN_LoopControl(snIotWebConf.getTZOffsetParam(), snIotWebConf.getDateTimeParam(), snIotWebConf.getSlotmachineTimeParam(), &countUpStart, &countDownEnd, &snIotWebConf.isConnected, &mode);
 
 unsigned long loopTs = millis() + SN_TICK_MS;
 boolean isTimeSet = false;

@@ -14,9 +14,6 @@
 #define CONFIG_PIN D5
 #define STATUS_PIN LED_BUILTIN
 
-#define STRING_LEN 128
-#define NUMBER_LEN 32
-
 const char thingName[] = "smart-nixie";
 const char wifiInitialApPassword[] = "12345678";
 static DNSServer dnsServer;
@@ -24,13 +21,16 @@ static ESP8266WebServer server(80);
 
 static IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPassword);
 
-static char dateTimeParamValue[STRING_LEN];
+static char dateTimeParamValue[20];
 static char tzOffsetHours[3];
-static IotWebConfSeparator timeSeparator = IotWebConfSeparator("Manual/Auto time settings");
-static IotWebConfParameter dateTimeParam = IotWebConfParameter("Current time for manual setup", "dateTimeParam", dateTimeParamValue, STRING_LEN, "text", "2020.01.01 11:00:00", "");
+static char slotmachineTimeParamValue[6];
 
+static IotWebConfSeparator timeSeparator = IotWebConfSeparator("Manual/Auto time settings");
+static IotWebConfParameter dateTimeParam = IotWebConfParameter("Current time for manual setup", "dateTimeParam", dateTimeParamValue, 20, "text", "2020.01.01 11:00:00", "");
 //TODO: add offset field validation
-static IotWebConfParameter tzidParam = IotWebConfParameter("Timezone offset from UTC in hours", "tzOffset", tzOffsetHours, 3, "text", "-1", "");
+static IotWebConfParameter tzOffsetParam = IotWebConfParameter("Timezone offset from UTC in hours", "tzOffset", tzOffsetHours, 3, "text", "-1", "");
+static IotWebConfSeparator otherSeparator = IotWebConfSeparator("Other settings");
+static IotWebConfParameter slotmachineTimeParam = IotWebConfParameter("Slotmachine time (cathode poisoning prevention)", "slotmachineTimeParam", slotmachineTimeParamValue, 6, "text", "21:00", "21:00");
 
 class SN_IotWebConf {
     public:
@@ -41,6 +41,7 @@ class SN_IotWebConf {
 		void doLoop();
         char *getDateTimeParam();
         char *getTZOffsetParam();
+        char *getSlotmachineTimeParam();
 
     private:
         static SN_LoopControl::Mode *currentMode;

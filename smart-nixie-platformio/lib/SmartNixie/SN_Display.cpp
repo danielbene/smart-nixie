@@ -3,7 +3,7 @@
 Adafruit_MCP23017 mcp;
 
 SN_Display::SN_Display() {
-    mcp.begin(0);   // address 0 is set by the mcp23017 wiring - RTFM
+    mcp.begin(0); // address 0 is set by the mcp23017 wiring - RTFM
 
     // these are the Adafruit pin addresses of the mcp for the tube driver controlls
     int ioPins[4][4] = {{15, 14, 13, 12}, {11, 10, 9, 8}, {0, 1, 2, 3}, {4, 5, 6, 7}};

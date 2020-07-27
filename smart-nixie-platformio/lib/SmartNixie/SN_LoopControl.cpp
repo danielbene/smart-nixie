@@ -4,12 +4,13 @@ SN_LoopControl::SN_LoopControl() {
     // NOP
 }
 
-SN_LoopControl::SN_LoopControl(char *tzOffsetParam, char *manualDateTimeDateTimeParam, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConn, Mode *modeParam) {
+SN_LoopControl::SN_LoopControl(char *tzOffsetParam, char *manualDateTimeDateTimeParam, char *slotmachineTimeParam, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConn, Mode *modeParam) {
     clock = SN_Clock(&disp);
     sensor = SN_Sensor(&disp);
 
     tzOffset = tzOffsetParam;
     manualDateTime = manualDateTimeDateTimeParam;
+    slotmachineTime = slotmachineTimeParam;
 
     isConnected = isConn;
     countUpStart = cntUpStart;
@@ -95,7 +96,7 @@ void SN_LoopControl::resetTimeParams() {
 void SN_LoopControl::slotmachineCheck() {
     //this is called only if clock mode active
     DateTime now = clock.getCurrentDateTime();
-    if (Util::charToTime(SN_SLOTMACHINE_START).hour() == now.hour() && Util::charToTime(SN_SLOTMACHINE_START).minute() == now.minute()) {
+    if (Util::charToTime(slotmachineTime).hour() == now.hour() && Util::charToTime(slotmachineTime).minute() == now.minute()) {
         Util::printDebugLine("ITS SLOTMACHINE TIME", true);
         *mode = Mode::SLOTMACHINE;
         slotmachineStart = now;

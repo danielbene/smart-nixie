@@ -6,7 +6,8 @@
 
 class Util {
     public:
-        static boolean isValidDate(const char *dateTime);
+        static boolean isValidDateTime(const char *dateTime);
+        static boolean isValidTime(const char *time);
         static boolean isValidMacAddress(const char *mac);
         static DateTime calculateFutureTime(int32_t minutes);
         static DateTime charToDateTime(char *dateTimeStr);

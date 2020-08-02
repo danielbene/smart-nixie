@@ -96,7 +96,8 @@ void SN_LoopControl::resetTimeParams() {
 void SN_LoopControl::slotmachineCheck() {
     //this is called only if clock mode active
     DateTime now = clock.getCurrentDateTime();
-    if (Util::charToTime(slotmachineTime).hour() == now.hour() && Util::charToTime(slotmachineTime).minute() == now.minute()) {
+    DateTime slotmachineDT = Util::charToTime(slotmachineTime); //TODO: refactor -> parsing only when config changes 
+    if (slotmachineDT.hour() == now.hour() && slotmachineDT.minute() == now.minute()) {
         Util::printDebugLine("ITS SLOTMACHINE TIME", true);
         *mode = Mode::SLOTMACHINE;
         slotmachineStart = now;

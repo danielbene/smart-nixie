@@ -1,9 +1,39 @@
 #include "Util.h"
 
-boolean Util::isValidDate(const char *dateTime) {
+boolean Util::isValidDateTime(const char *dateTime) {
 	//TODO: proper datetime validation for format - yyyy.mm.dd HH24:mm:ss
     printDebugLine("UNIMPLEMENTED METHOD USED! - Util::isValidDate", true);
-	return true;
+
+	boolean isValid = true;
+	std::string dt = dateTime;
+
+	if (dt.length() != 19) {
+		isValid = false;
+	} else if (dt.at(4) != '.' || dt.at(7) != '.' || dt.at(10) != ' ' || dt.at(13) != ':' ||  dt.at(15) != ':') {
+		isValid = false;
+	} else {
+		//parse after basic format tests to avoid some malformed input errors
+		int month = atoi(dt.substr(5, 2).c_str());
+		int day = atoi(dt.substr(8, 2).c_str());
+
+		String msg[] = {"DATETIME VALIDATION: ", String(month), " / ", String(day)};
+		Util::printDebugLine(msg, 4, true);
+
+	}
+
+
+
+	return isValid;
+}
+
+boolean Util::isValidTime(const char *time) {
+	int hour, minute;
+
+	std::string s = time;
+	hour = atoi(s.substr(0, s.find(":")).c_str());
+	minute = atoi(s.substr(s.find(":") + 1, s.length()).c_str());
+
+	return (hour >= 0 && hour <= 24) && (minute >= 0 && minute <= 60);
 }
 
 boolean Util::isValidMacAddress(const char *mac) {

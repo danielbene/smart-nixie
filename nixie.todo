@@ -16,7 +16,7 @@
   [x] implement time setup (timezone based / manual setup) - blocked by IotWebConf impl
   [x] implement sensors (bme temp/hum/air pressure?/altitude?)
   [ ] blank left tube before 12:00? / blanking in countdown, countup? -> not in slotmachine (when all digits zero?)
-  [ ] slotmachine!!! - anti cathode poisoning (may conflict with the blanking feature - it has to cycle through the zeros too)
+  [x] slotmachine!!! - anti cathode poisoning (may conflict with the blanking feature - it has to cycle through the zeros too)
   [x] mode change has to trigger display refresh - (does not happen imediately because of the cycle saving feature)
   [ ] static ip setup through iotwebconf AP
   [ ] control page pimp

@@ -7,6 +7,8 @@
 DateTime countUpStart;
 DateTime countDownEnd;
 SN_LoopControl::Mode mode;
+
+//TODO: too much parameters, needs refactor
 SN_IotWebConf snIotWebConf = SN_IotWebConf(&mode, &countUpStart, &countDownEnd);
 SN_LoopControl snLoopControl = SN_LoopControl(snIotWebConf.getTZOffsetParam(), snIotWebConf.getDateTimeParam(), snIotWebConf.getSlotmachineTimeParam(), &countUpStart, &countDownEnd, &snIotWebConf.isConnected, &mode);
 

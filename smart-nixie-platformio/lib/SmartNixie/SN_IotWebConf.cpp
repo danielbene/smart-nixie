@@ -84,8 +84,13 @@ boolean SN_IotWebConf::formValidator() {
 	Util::printDebugLine("Validating form.", true);
 	boolean valid = true;
 
-	if (valid && !Util::isValidDate(server.arg(dateTimeParam.getId()).c_str()) && !server.arg(dateTimeParam.getId()).equals("")) {
+	if (valid && !Util::isValidDateTime(server.arg(dateTimeParam.getId()).c_str()) && !server.arg(dateTimeParam.getId()).equals("")) {
 		dateTimeParam.errorMessage = "Invalid date! Please use the example format.";
+		valid = false;
+	}
+
+	if (valid && !Util::isValidTime(server.arg(slotmachineTimeParam.getId()).c_str()) && !server.arg(slotmachineTimeParam.getId()).equals("")) {
+		slotmachineTimeParam.errorMessage = "Invalid slotmachine time! Please use the example format.";
 		valid = false;
 	}
 

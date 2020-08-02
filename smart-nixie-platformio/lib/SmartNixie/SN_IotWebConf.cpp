@@ -28,7 +28,9 @@ void SN_IotWebConf::setup() {
 	iotWebConf.setConfigPin(CONFIG_PIN);
 	iotWebConf.addParameter(&timeSeparator);
 	iotWebConf.addParameter(&dateTimeParam);
-	iotWebConf.addParameter(&tzidParam);
+	iotWebConf.addParameter(&tzOffsetParam);
+	iotWebConf.addParameter(&otherSeparator);
+	iotWebConf.addParameter(&slotmachineTimeParam);
 	iotWebConf.setConfigSavedCallback(&onConfigSaved);
 	iotWebConf.setWifiConnectionCallback(&onConnect);
 	iotWebConf.setFormValidator(&formValidator);
@@ -57,7 +59,11 @@ char *SN_IotWebConf::getDateTimeParam() {
 }
 
 char *SN_IotWebConf::getTZOffsetParam() {
-	return tzOffsetHours;
+	return &tzOffsetHours[0];
+}
+
+char *SN_IotWebConf::getSlotmachineTimeParam() {
+	return &slotmachineTimeParamValue[0];
 }
 
 void SN_IotWebConf::onConfigSaved() {
@@ -78,8 +84,13 @@ boolean SN_IotWebConf::formValidator() {
 	Util::printDebugLine("Validating form.", true);
 	boolean valid = true;
 
-	if (valid && !Util::isValidDate(server.arg(dateTimeParam.getId()).c_str()) && !server.arg(dateTimeParam.getId()).equals("")) {
+	if (valid && !Util::isValidDateTime(server.arg(dateTimeParam.getId()).c_str()) && !server.arg(dateTimeParam.getId()).equals("")) {
 		dateTimeParam.errorMessage = "Invalid date! Please use the example format.";
+		valid = false;
+	}
+
+	if (valid && !Util::isValidTime(server.arg(slotmachineTimeParam.getId()).c_str()) && !server.arg(slotmachineTimeParam.getId()).equals("")) {
+		slotmachineTimeParam.errorMessage = "Invalid slotmachine time! Please use the example format.";
 		valid = false;
 	}
 

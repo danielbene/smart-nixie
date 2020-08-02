@@ -1,15 +1,21 @@
 #include "Util.h"
 
+//Validated pattern: yyyy.mm.dd hh24:mm:ss
 boolean Util::isValidDateTime(const char *dateTime) {
 	boolean isValid = true;
 	std::string dt = dateTime;
 
+	//TODO: it would be nice to write the cause to the user - needs some modification in the formValidator method (~here ret null or error msg)
 	if (dt.length() != 19) {
 		isValid = false;
+		printDebugLine("DATETIME VALIDATION: INPUT STRING TOO SHORT", true);
+	} else if (!containsDateCharsOnly(dt)) {
+		isValid = false;
+		printDebugLine("DATETIME VALIDATION: INVALID CHARACTER IN INPUT STRING", true);
 	} else if (dt.at(4) != '.' || dt.at(7) != '.' || dt.at(10) != ' ' || dt.at(13) != ':' ||  dt.at(16) != ':') {
 		isValid = false;
+		printDebugLine("DATETIME VALIDATION: INPUT STRING - INVALID FORMAT", true);
 	} else {
-		//parse after basic format tests to avoid some malformed input errors
 		int month = atoi(dt.substr(5, 2).c_str());
 		int day = atoi(dt.substr(8, 2).c_str());
 		int hour = atoi(dt.substr(11, 2).c_str());
@@ -21,11 +27,14 @@ boolean Util::isValidDateTime(const char *dateTime) {
 			&& (hour >= 0 && hour <= 24)
 			&& (minute >= 0 && minute <= 60)
 			&& (second >= 0 && second <= 60);
+
+		printDebugLine("DATETIME VALIDATION: INPUT STRING - INVALID VALUES", true);
 	}
 
 	return isValid;
 }
 
+//Validated pattern: hh24:mm
 boolean Util::isValidTime(const char *time) {
 	int hour, minute;
 
@@ -66,7 +75,7 @@ DateTime Util::calculateFutureTime(int32_t minutes) {
 
 /**
  * Convert char pointer (c str) to DateTime object.
- * Needed pattern: yyyy.mm.dd hh:mm:ss
+ * Required pattern: yyyy.mm.dd hh:mm:ss
 **/
 DateTime Util::charToDateTime(char *dateStr) {
 	tm tm1;
@@ -98,4 +107,8 @@ void Util::printDebugLine(String params[], int paramSize, boolean addNewLine) {
 
 		if (addNewLine) Serial.println();
 	}
+}
+
+boolean Util::containsDateCharsOnly(std::string dateTime) {
+	return dateTime.find_first_not_of("0123456789.: ") == std::string::npos;
 }

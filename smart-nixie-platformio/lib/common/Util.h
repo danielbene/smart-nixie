@@ -16,6 +16,7 @@ class Util {
         static void printDebugLine(String params[], int paramsSize, boolean addNewLine = false);
 
     private:
+        static boolean containsDateCharsOnly(std::string dateTime);
         static RTC_DS3231 rtc;
 
 };

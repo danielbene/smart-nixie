@@ -32,8 +32,7 @@
 *.app
 
 # Platform.io
-smart-nixie-platformio/.pio
-smart-nixie-platformio/.vscode/.browse.c_cpp.db*
-smart-nixie-platformio/.vscode/c_cpp_properties.json
-smart-nixie-platformio/.vscode/launch.json
-smart-nixie-platformio/.vscode/ipch
+.pio
+
+# VSCode
+.vscode

@@ -1,4 +1,4 @@
-#PCB
+# PCB
 
 This is my very first PCB design that I have ever made, so detailed opinions for better execution is welcome. I used EasyEDA designer, and ordered the first batch from JLCPCB.  
 

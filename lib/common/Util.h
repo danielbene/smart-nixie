@@ -2,13 +2,14 @@
 #define UTIL_H
 
 #include <Arduino.h>
+#include <IPAddress.h>
 #include <RTClib.h>
 
 class Util {
     public:
         static boolean isValidDateTime(const char *dateTime);
         static boolean isValidTime(const char *time);
-        static boolean isValidIpAddress(const char *ip);
+        static boolean isValidIpAddress(String ip);
         static boolean isValidMacAddress(const char *mac);
         static DateTime calculateFutureTime(int32_t minutes);
         static DateTime charToDateTime(char *dateTimeStr);

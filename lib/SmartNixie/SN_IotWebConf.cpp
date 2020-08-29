@@ -36,6 +36,17 @@ void SN_IotWebConf::setup() {
 
 	iotWebConf.init();
 
+	if ((staticIpParam.valueBuffer != NULL) && (staticIpParam.valueBuffer[0] != '\0')) {
+		IPAddress staticIp, gateway, subnet, dns;
+		staticIp.fromString(staticIpParamValue);
+		gateway.fromString(gatewayIpParamValue);
+		subnet.fromString(subnetMaskParamValue);
+		dns.fromString(dnsServerParamValue);
+
+		WiFi.config(staticIp, gateway, subnet, dns);
+		Util::printDebugLine("SET UP STATIC IP BASED ON STORED PARAMETERS", true);
+	}
+
 	server.on("/", handleRoot);
 	server.on("/config", []{ iotWebConf.handleConfig(); });
 	server.on("/clock", onClockState);
@@ -103,6 +114,30 @@ boolean SN_IotWebConf::formValidator() {
 		subnetMaskParam.errorMessage = "All parameters required for proper static IP setup!";
 		dnsServerParam.errorMessage = "All parameters required for proper static IP setup!";
 		valid = false;
+	}
+
+	if (valid && (!server.arg(staticIpParam.getId()).equals("") && !server.arg(gatewayIpParam.getId()).equals("")
+	&& !server.arg(subnetMaskParam.getId()).equals("") && !server.arg(dnsServerParam.getId()).equals(""))) {
+		//if all IP params filled then validate them separately
+		if (valid && !Util::isValidIpAddress(server.arg(staticIpParam.getId()))) {
+			staticIpParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
+
+		if (valid && !Util::isValidIpAddress(server.arg(gatewayIpParam.getId()))) {
+			gatewayIpParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
+
+		if (valid && !Util::isValidIpAddress(server.arg(subnetMaskParam.getId()))) {
+			subnetMaskParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
+
+		if (valid && !Util::isValidIpAddress(server.arg(dnsServerParam.getId()))) {
+			dnsServerParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
 	}
 
 	return valid;

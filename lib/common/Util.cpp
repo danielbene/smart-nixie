@@ -45,11 +45,9 @@ boolean Util::isValidTime(const char *time) {
 	return (hour >= 0 && hour <= 24) && (minute >= 0 && minute <= 60);
 }
 
-boolean Util::isValidIpAddress(const char *ip) {
-
-	//TODO: proper IP address validation
-
-	return true;
+boolean Util::isValidIpAddress(String ip) {
+	IPAddress validator;
+	return validator.fromString(ip);
 }
 
 boolean Util::isValidMacAddress(const char *mac) {

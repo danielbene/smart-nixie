@@ -65,7 +65,7 @@ boolean SN_Clock::doSlotmachineLoop(DateTime *slotmachineStart) {
         int cycle = (int)diff.totalseconds() / 10;
         int cathodeNums = cycle * 1000 + cycle * 100 + cycle * 10 + cycle;
 
-        disp->showDec(cathodeNums);
+        disp->showDec(cathodeNums, false);
     }
 
     return false;
@@ -99,5 +99,9 @@ int SN_Clock::getCurrentTimeAsDec() {
 
 void SN_Clock::displayTime(int decTime) {
     Util::printDebugLine("-------------------------------", true);
-    disp->showDec(decTime);
+    if ((blankLeftZeros != NULL) && (*blankLeftZeros == 'Y')) {
+        disp->showDec(decTime, true);
+    } else {
+        disp->showDec(decTime, false);
+    }
 }

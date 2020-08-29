@@ -16,7 +16,7 @@ class SN_Display {
         void fillZeros();
         void flash();
         void flash(int num);
-        void showDec(int num);
+        void showDec(int num, boolean blankLeftZeros);
         void turnOff();
 
     private:

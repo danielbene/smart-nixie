@@ -29,16 +29,30 @@ void SN_Display::flash() {
 
 // TODO: this will be good for error codes too imo
 void SN_Display::flash(int num) {
-    isFlashStateOn ? showDec(num) : turnOff();
+    isFlashStateOn ? showDec(num, false) : turnOff();
     flashStateChange();
 }
 
-void SN_Display::showDec(int num) {
+void SN_Display::showDec(int num, boolean blankLeftZeros) {
     String msg[] = {String(num), "(", String(lastDisplayedDec), "): "};
     Util::printDebugLine(msg, 4);
 
     if (lastDisplayedDec != num) {
-        setTubeValues((num % 10000) / 1000, (num % 1000) / 100, (num % 100) / 10, num % 10);
+        int tenHours = (num % 10000) / 1000;
+        int hours = (num % 1000) / 100;
+        int tenMinutes = (num % 100) / 10;
+        int minutes = num % 10;
+
+        if (!blankLeftZeros){
+            setTubeValues(tenHours, hours, tenMinutes, minutes);
+        } else {
+            if (num < 1000) tenHours = SN_Tube::INVALID_STATE;
+            if (num < 100) hours = SN_Tube::INVALID_STATE;
+            if (num < 10) tenMinutes = SN_Tube::INVALID_STATE;
+
+            setTubeValues(tenHours, hours, tenMinutes, minutes);
+        }
+
         setDisplayFlags(num, false);
     }
 

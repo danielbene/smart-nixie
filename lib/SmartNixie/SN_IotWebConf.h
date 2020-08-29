@@ -25,6 +25,7 @@ static IotWebConf iotWebConf(thingName, &dnsServer, &server, wifiInitialApPasswo
 static char dateTimeParamValue[20];
 static char tzOffsetHours[3];
 static char slotmachineTimeParamValue[6];
+static char blankingLeftZerosParamValue[2];
 
 static char staticIpParamValue[IP_ADDRESS_LENGTH];
 static char gatewayIpParamValue[IP_ADDRESS_LENGTH];
@@ -37,8 +38,9 @@ static IotWebConfParameter dateTimeParam = IotWebConfParameter("Current time for
 static IotWebConfParameter tzOffsetParam = IotWebConfParameter("Timezone offset from UTC in hours", "tzOffset", tzOffsetHours, 3, "text", "-1", "");
 static IotWebConfSeparator otherSeparator = IotWebConfSeparator("Other settings");
 static IotWebConfParameter slotmachineTimeParam = IotWebConfParameter("Slotmachine time (cathode poisoning prevention)", "slotmachineTimeParam", slotmachineTimeParamValue, 6, "text", "21:00", "21:00");
+//using text based true/false temporarly - iotwebconf do not handle checkbox well yet
+static IotWebConfParameter blankingLeftZerosParam = IotWebConfParameter("Blanking left side zero tubes", "blankingLeftZero", blankingLeftZerosParamValue, 2, "text", "Y or N", "N");
 
-//TODO: ip address validation
 static IotWebConfSeparator staticIpSeparator = IotWebConfSeparator("Static IP settings (optional)");
 static IotWebConfParameter staticIpParam = IotWebConfParameter("Static IP address for the nixie clock", "staticIp", staticIpParamValue, IP_ADDRESS_LENGTH, "text", "192.168.1.2", "");
 static IotWebConfParameter gatewayIpParam = IotWebConfParameter("IP address of the network gateway (usually the router)", "gatewayIp", gatewayIpParamValue, IP_ADDRESS_LENGTH, "text", "192.168.1.1", "");
@@ -53,6 +55,7 @@ class SN_IotWebConf {
         static boolean isConnected;
 		void setup();
 		void doLoop();
+        char *getBlankingLeftZerosParam();
         char *getDateTimeParam();
         char *getTZOffsetParam();
         char *getSlotmachineTimeParam();

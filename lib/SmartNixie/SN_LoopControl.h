@@ -11,7 +11,7 @@ class SN_LoopControl {
     public:
         enum class Mode {CLOCK, COUNTDOWN, COUNTUP, ERROR, SENSOR, SLOTMACHINE, OFF};
         SN_LoopControl();
-        SN_LoopControl(char *tzOffset, char *manualDateTime, char *slotmachineTime, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConnected, Mode *mode);
+        SN_LoopControl(char *tzOffset, char *manualDateTime, char *slotmachineTime, char *blankingLeftZeros, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConnected, Mode *mode);
 		void doLoop();
         void timeParamUpdate();
         boolean timeUpdate();

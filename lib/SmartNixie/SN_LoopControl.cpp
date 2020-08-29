@@ -4,9 +4,11 @@ SN_LoopControl::SN_LoopControl() {
     // NOP
 }
 
-SN_LoopControl::SN_LoopControl(char *tzOffsetParam, char *manualDateTimeDateTimeParam, char *slotmachineTimeParam, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConn, Mode *modeParam) {
+SN_LoopControl::SN_LoopControl(char *tzOffsetParam, char *manualDateTimeDateTimeParam, char *slotmachineTimeParam, char *blankingLeftZeros, DateTime *cntUpStart, DateTime *cntDownEnd, boolean *isConn, Mode *modeParam) {
     clock = SN_Clock(&disp);
     sensor = SN_Sensor(&disp);
+
+    clock.blankLeftZeros = blankingLeftZeros;
 
     tzOffset = tzOffsetParam;
     manualDateTime = manualDateTimeDateTimeParam;

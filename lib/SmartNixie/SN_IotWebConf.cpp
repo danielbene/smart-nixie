@@ -25,6 +25,7 @@ void SN_IotWebConf::setup() {
 	iotWebConf.addParameter(&tzOffsetParam);
 	iotWebConf.addParameter(&otherSeparator);
 	iotWebConf.addParameter(&slotmachineTimeParam);
+	iotWebConf.addParameter(&blankingLeftZerosParam);
 	iotWebConf.addParameter(&staticIpSeparator);
 	iotWebConf.addParameter(&staticIpParam);
 	iotWebConf.addParameter(&gatewayIpParam);
@@ -62,6 +63,10 @@ void SN_IotWebConf::setup() {
 void SN_IotWebConf::doLoop() {
 	MDNS.update();
 	iotWebConf.doLoop();
+}
+
+char *SN_IotWebConf::getBlankingLeftZerosParam() {
+	return &blankingLeftZerosParamValue[0];
 }
 
 char *SN_IotWebConf::getDateTimeParam() {
@@ -138,6 +143,11 @@ boolean SN_IotWebConf::formValidator() {
 			dnsServerParam.errorMessage = "Invalid IP address.";
 			valid = false;
 		}
+	}
+
+	if (valid && !(server.arg(blankingLeftZerosParam.getId()).equals("Y") || server.arg(blankingLeftZerosParam.getId()).equals("N"))) {
+		blankingLeftZerosParam.errorMessage = "Invalid input. It should be Y if yes, or N if no.";
+		valid = false;
 	}
 
 	return valid;

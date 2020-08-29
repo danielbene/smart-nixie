@@ -99,5 +99,9 @@ int SN_Clock::getCurrentTimeAsDec() {
 
 void SN_Clock::displayTime(int decTime) {
     Util::printDebugLine("-------------------------------", true);
-    disp->showDec(decTime, true);
+    if ((blankLeftZeros != NULL) && (*blankLeftZeros == 'Y')) {
+        disp->showDec(decTime, true);
+    } else {
+        disp->showDec(decTime, false);
+    }
 }

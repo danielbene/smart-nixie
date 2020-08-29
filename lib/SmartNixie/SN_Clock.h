@@ -16,6 +16,7 @@ class SN_Clock {
     public:
         SN_Clock();
         SN_Clock(SN_Display *snDisp);
+        char *blankLeftZeros;
         void displayCurrentTime();
         void doCountDownLoop(DateTime *countDownEnd);
         void doCountUpLoop(DateTime *countUpStart);

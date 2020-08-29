@@ -16,13 +16,14 @@
   [x] implement sensors (bme temp/hum/air pressure?/altitude?)
   [x] slotmachine!!! - anti cathode poisoning (may conflict with the blanking feature - it has to cycle through the zeros too)
   [x] mode change has to trigger display refresh - (does not happen imediately because of the cycle saving feature)
-  [ ] static ip setup through iotwebconf AP
-  [ ] implement MAC based autoturnoff - PROBLEMATIC
+  [x] static ip setup through iotwebconf AP
+  [x] mdns name setup to iotwebconf
   [ ] blank left tube before 12:00? / blanking in countdown, countup? -> not in slotmachine (when all digits zero?) - LOW_PRIO: i guess it looks better with the leading zeros - it could be implemented in higher level (so not in or below display controller class), based on iotwebconf config
+  [ ] implement MAC based autoturnoff - PROBLEMATIC
   [ ] control page pimp
   [ ] testing RTC lost power boot
 
-  [ ] design/test/re-test/order PCB
+  [x] design/test/re-test/order PCB
   [ ] solder things
   [ ] case design + create
   [ ] put things together

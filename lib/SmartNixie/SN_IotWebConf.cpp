@@ -18,12 +18,6 @@ SN_IotWebConf::SN_IotWebConf(SN_LoopControl::Mode *mode, DateTime *cntUpStart, D
 void SN_IotWebConf::setup() {
 	Util::printDebugLine("Starting up...", true);
 
-	/*IPAddress staticIp(192, 168, 100, 21);
-	IPAddress gateway(192, 168, 100, 1);
-	IPAddress subnet(255, 255, 255, 0);
-	IPAddress dns(1, 1, 1, 1);
-	WiFi.config(staticIp, gateway, subnet, dns);*/
-
 	iotWebConf.setStatusPin(STATUS_PIN);
 	iotWebConf.setConfigPin(CONFIG_PIN);
 	iotWebConf.addParameter(&timeSeparator);
@@ -31,11 +25,27 @@ void SN_IotWebConf::setup() {
 	iotWebConf.addParameter(&tzOffsetParam);
 	iotWebConf.addParameter(&otherSeparator);
 	iotWebConf.addParameter(&slotmachineTimeParam);
+	iotWebConf.addParameter(&staticIpSeparator);
+	iotWebConf.addParameter(&staticIpParam);
+	iotWebConf.addParameter(&gatewayIpParam);
+	iotWebConf.addParameter(&subnetMaskParam);
+	iotWebConf.addParameter(&dnsServerParam);
 	iotWebConf.setConfigSavedCallback(&onConfigSaved);
 	iotWebConf.setWifiConnectionCallback(&onConnect);
 	iotWebConf.setFormValidator(&formValidator);
 
 	iotWebConf.init();
+
+	if ((staticIpParam.valueBuffer != NULL) && (staticIpParam.valueBuffer[0] != '\0')) {
+		IPAddress staticIp, gateway, subnet, dns;
+		staticIp.fromString(staticIpParamValue);
+		gateway.fromString(gatewayIpParamValue);
+		subnet.fromString(subnetMaskParamValue);
+		dns.fromString(dnsServerParamValue);
+
+		WiFi.config(staticIp, gateway, subnet, dns);
+		Util::printDebugLine("SET UP STATIC IP BASED ON STORED PARAMETERS", true);
+	}
 
 	server.on("/", handleRoot);
 	server.on("/config", []{ iotWebConf.handleConfig(); });
@@ -67,7 +77,7 @@ char *SN_IotWebConf::getSlotmachineTimeParam() {
 }
 
 void SN_IotWebConf::onConfigSaved() {
-	// NOP - may gets logic later
+	staticIpUpdater();
 	Util::printDebugLine("Configuration was updated.", true);
 }
 
@@ -75,7 +85,7 @@ void SN_IotWebConf::onConnect() {
 	MDNS.close();
 	delay(100);
 
-	MDNS.begin(SN_MDNS_NAME); // will be reachable on SN_MDNS_NAME.local URL (Android do not support mDNS URLs)
+	MDNS.begin(iotWebConf.getThingName()); // will be reachable on thingname.local URL (Android do not support mDNS URLs)
 
 	isConnected = true;
 }
@@ -94,7 +104,71 @@ boolean SN_IotWebConf::formValidator() {
 		valid = false;
 	}
 
+	//valid if all params empty, or all params filled
+	if (valid && !((server.arg(staticIpParam.getId()).equals("") && server.arg(gatewayIpParam.getId()).equals("")
+	&& server.arg(subnetMaskParam.getId()).equals("") && server.arg(dnsServerParam.getId()).equals(""))
+	|| (!server.arg(staticIpParam.getId()).equals("") && !server.arg(gatewayIpParam.getId()).equals("")
+	&& !server.arg(subnetMaskParam.getId()).equals("") && !server.arg(dnsServerParam.getId()).equals("")))) {
+		staticIpParam.errorMessage = "All parameters required for proper static IP setup!";
+		gatewayIpParam.errorMessage = "All parameters required for proper static IP setup!";
+		subnetMaskParam.errorMessage = "All parameters required for proper static IP setup!";
+		dnsServerParam.errorMessage = "All parameters required for proper static IP setup!";
+		valid = false;
+	}
+
+	if (valid && (!server.arg(staticIpParam.getId()).equals("") && !server.arg(gatewayIpParam.getId()).equals("")
+	&& !server.arg(subnetMaskParam.getId()).equals("") && !server.arg(dnsServerParam.getId()).equals(""))) {
+		//if all IP params filled then validate them separately
+		if (valid && !Util::isValidIpAddress(server.arg(staticIpParam.getId()))) {
+			staticIpParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
+
+		if (valid && !Util::isValidIpAddress(server.arg(gatewayIpParam.getId()))) {
+			gatewayIpParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
+
+		if (valid && !Util::isValidIpAddress(server.arg(subnetMaskParam.getId()))) {
+			subnetMaskParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
+
+		if (valid && !Util::isValidIpAddress(server.arg(dnsServerParam.getId()))) {
+			dnsServerParam.errorMessage = "Invalid IP address.";
+			valid = false;
+		}
+	}
+
 	return valid;
+}
+
+void SN_IotWebConf::staticIpUpdater() {
+	if (!server.arg(staticIpParam.getId()).equals("")) {
+		//set static IP
+		IPAddress staticIp, gateway, subnet, dns;
+		staticIp.fromString(staticIpParamValue);
+		gateway.fromString(gatewayIpParamValue);
+		subnet.fromString(subnetMaskParamValue);
+		dns.fromString(dnsServerParamValue);
+
+		WiFi.disconnect();
+		WiFi.config(staticIp, gateway, subnet, dns);
+		delay(100);
+
+		WiFi.begin(iotWebConf.getWifiSsidParameter()->valueBuffer, iotWebConf.getWifiPasswordParameter()->valueBuffer);
+
+		Util::printDebugLine("WIFI STATIC IP CONFIGURATION UPDATED", true);
+	} else {
+		//back to DHCP
+		WiFi.disconnect();
+		delay(100);
+
+		WiFi.begin(iotWebConf.getWifiSsidParameter()->valueBuffer, iotWebConf.getWifiPasswordParameter()->valueBuffer);
+		WiFi.config(0U, 0U, 0U, 0U);
+
+		Util::printDebugLine("WIFI DYNAMIC IP (DHCP) CONFIGURATION UPDATED", true);
+	}
 }
 
 void SN_IotWebConf::handleRoot() {

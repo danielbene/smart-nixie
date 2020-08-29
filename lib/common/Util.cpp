@@ -45,6 +45,13 @@ boolean Util::isValidTime(const char *time) {
 	return (hour >= 0 && hour <= 24) && (minute >= 0 && minute <= 60);
 }
 
+boolean Util::isValidIpAddress(const char *ip) {
+
+	//TODO: proper IP address validation
+
+	return true;
+}
+
 boolean Util::isValidMacAddress(const char *mac) {
 	int i = 0;
 	int s = 0;
@@ -111,4 +118,23 @@ void Util::printDebugLine(String params[], int paramSize, boolean addNewLine) {
 
 boolean Util::containsDateCharsOnly(std::string dateTime) {
 	return dateTime.find_first_not_of("0123456789.: ") == std::string::npos;
+}
+
+String *Util::stringSplit(String delimeter, String str, int maxTokenCount) {
+	std::string s = str.c_str();
+	std::string deli = delimeter.c_str();
+
+	int cnt = 0;
+	size_t pos = 0;
+	String tokens[maxTokenCount];
+
+	while((pos = s.find(deli)) != std::string::npos) {
+		tokens[cnt] = String(s.substr(0, pos).c_str());
+		s.erase(0, pos + deli.length());
+		cnt++;
+	}
+
+	//String(*tokens.c_str()) / String((*(tokens+1)).c_str()) / String((*(tokens+2)).c_str()) etc... ugly but works
+
+	return tokens;
 }

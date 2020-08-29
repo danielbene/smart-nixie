@@ -19,7 +19,7 @@ void SN_Sensor::displayCurrentValues() {
     readValues();
     int t = round(temp);
     int h = round(hum);
-    disp->showDec(h * 100 + t);
+    disp->showDec(h * 100 + t, false);
 }
 
 void SN_Sensor::readValues() {

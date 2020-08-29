@@ -85,7 +85,7 @@ void SN_IotWebConf::onConnect() {
 	MDNS.close();
 	delay(100);
 
-	MDNS.begin(SN_MDNS_NAME); // will be reachable on SN_MDNS_NAME.local URL (Android do not support mDNS URLs)
+	MDNS.begin(iotWebConf.getThingName()); // will be reachable on thingname.local URL (Android do not support mDNS URLs)
 
 	isConnected = true;
 }

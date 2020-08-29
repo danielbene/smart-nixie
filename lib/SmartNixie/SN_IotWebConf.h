@@ -15,7 +15,7 @@
 #define STATUS_PIN LED_BUILTIN
 #define IP_ADDRESS_LENGTH 15
 
-const char thingName[] = "smart-nixie";
+const char thingName[] = "nixie";
 const char wifiInitialApPassword[] = "12345678";
 static DNSServer dnsServer;
 static ESP8266WebServer server(80);

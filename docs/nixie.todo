@@ -1,5 +1,5 @@
   [x] update the frickin readme!!!
-  [ ] upload documentation, pictures, pogress
+  [x] upload documentation, pictures, pogress
   [ ] write inline docs - credits, author, brief etc in modul file headers
 
   [x] test tube with driver
@@ -19,15 +19,17 @@
   [x] static ip setup through iotwebconf AP
   [x] mdns name setup to iotwebconf
   [x] blank left tube before 12:00? / blanking in countdown, countup? -> not in slotmachine (when all digits zero?) - LOW_PRIO: i guess it looks better with the leading zeros - it could be implemented in higher level (so not in or below display controller class), based on iotwebconf config
+  [ ] refactor NTP usage, and sn_iotwebconf constructor
   [ ] implement MAC based autoturnoff - PROBLEMATIC
   [ ] control page pimp
   [ ] testing RTC lost power boot
+  [ ] cleanup / refactor deeply
 
   [x] design/test/re-test/order PCB
-  [ ] solder things
+  [x] solder things
   [ ] case design + create
-  [ ] put things together
+  [x] put things together
   [ ] ???
   [ ] profit
 
-  [ ] release 1.0 on github
+  [x] release 1.0 on github

@@ -1,5 +1,5 @@
   [x] update the frickin readme!!!
-  [ ] upload documentation, pictures, pogress
+  [x] upload documentation, pictures, pogress
   [ ] write inline docs - credits, author, brief etc in modul file headers
 
   [x] test tube with driver
@@ -23,6 +23,7 @@
   [ ] implement MAC based autoturnoff - PROBLEMATIC
   [ ] control page pimp
   [ ] testing RTC lost power boot
+  [ ] cleanup / refactor deeply
 
   [x] design/test/re-test/order PCB
   [x] solder things
@@ -31,4 +32,4 @@
   [ ] ???
   [ ] profit
 
-  [ ] release 1.0 on github
+  [x] release 1.0 on github

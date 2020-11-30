@@ -28,6 +28,8 @@ Main aspects of the project:
 - modular design for easier repairs/modifications  
 - code design focuses on the longevity of the electronic parts (tries to avoid unnecessary actions)  
 
+There are things that did not made into 1.0, but I wanted to release it anyway.  
+
 ### Version
 Current firmware version: 1.0  
 Compatible pcb version: 1.0  

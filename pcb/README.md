@@ -4,9 +4,8 @@ Version: 1.0
 This is the first PCB design that I have ever made, so detailed opinions for better execution is welcome. I used EasyEDA designer, and ordered the first batch from JLCPCB.  
 
 <p align="center">
- <img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/pcb/img/front.svg" width=450 align="left">
- <img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/pcb/img/back.svg" width=450 align="right"><br>
- <i>Designer generated front, and back view of the PCB.</i>
+<img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/pcb/img/front.svg" width=400>
+<img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/pcb/img/back.svg" width=400>
 </p>
 
 You can find the gerber files here. These are used for production, and it's compatible with most manufacturer's order processing. (For modifyability a project backup file is included too.)

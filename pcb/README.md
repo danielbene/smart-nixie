@@ -12,3 +12,5 @@ You can find the gerber files here. These are used for production, and it's comp
  - Version 1.0 was fully functional after assembly. It was easy to solder and a decent design. The pcb footprint was bigger than I imagined based on the project files (don't get me wrong I had the correct dimensions, but it just looks bigger). I see some minor design flaws that I would like to correct in later versions, but I'm quite satisfied and proud of it.
  
 <img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/docs/pics/pcb_arrival.jpg">
+
+The arrived pcbs were really high quality, so I'm totally satisfied with the service of JLCPCB. (Got a branded keychain as a bonus too.)

@@ -5,10 +5,13 @@ This is the first PCB design that I have ever made, so detailed opinions for bet
 
 <p>
  <img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/pcb/img/front.svg" width=450 align="left">
- <img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/pcb/img/back.svg" width=450 align="right"><br>
+ <img src="https://raw.githubusercontent.com/danielbene/smart-nixie/master/pcb/img/back.svg" width=450 align="right">
 </p>
 
+<p>
+<br>
 You can find the gerber files here. These are used for production, and it's compatible with most manufacturer's order processing. (For modifyability a project backup file is included too.)
+</p>
 
 ### Notes
  - Version 1.0 was fully functional after assembly. It was easy to solder and a decent design. The pcb footprint was bigger than I imagined based on the project files (don't get me wrong I had the correct dimensions, but it just looks bigger). I see some minor design flaws that I would like to correct in later versions, but I'm quite satisfied and proud of it.
